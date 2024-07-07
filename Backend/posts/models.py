@@ -1,15 +1,27 @@
-# models.py
 from django.db import models
 from django.contrib.auth.models import User
 from users.models import Profile
 from django.utils.text import slugify
 import uuid
 from django_quill.fields import QuillField
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 
 class Status(models.TextChoices):
     DRAFT = 'DRAFT', 'Draft'
     PUBLIC = 'PUBLIC', 'Public'
     PRIVATE = 'PRIVATE', 'Private'
+
+class Post(models.Model):
+    title = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(default="", null=True, unique=True, blank=True)
+    status = models.CharField(max_length=7, choices=Status.choices, default=Status.PUBLIC)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    comments = GenericRelation('Comment')
+
+    class Meta:
+        abstract = True
 
 class Hashtag(models.Model):
     name = models.SlugField(max_length=50, unique=True)
@@ -18,17 +30,12 @@ class Hashtag(models.Model):
         return self.name
 
 #///////////////Novel////////////////////////
-class Novel(models.Model):
+class Novel(Post):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='novels', db_index=True)
-    title = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(default="", null=True, unique=True, blank=True)
     media = models.ImageField(default="no_img.png", upload_to='novel_icons/')
-    description = models.CharField(max_length=750,blank=True,null=True)
-    hashtags = models.ManyToManyField(Hashtag, related_name='novels',blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=7, choices=Status.choices, default=Status.PUBLIC)
+    description = models.CharField(max_length=750, blank=True, null=True)
+    hashtags = models.ManyToManyField(Hashtag, related_name='novels', blank=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -45,15 +52,10 @@ class NovelChapter(models.Model):
 #////////////////////////////////////////////
 
 #//////////////Comic///////////////////
-class Comic(models.Model):
-    id = models.UUIDField( default=uuid.uuid4, editable=False, primary_key=True)
+class Comic(Post):
+    id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='comics', db_index=True)
-    title = models.CharField(max_length=100)
-    slug = models.SlugField(default="", null=True, blank=True)
     media = models.ImageField(default="no_img.png", upload_to='comic_icons/')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=7, choices=Status.choices, default=Status.PUBLIC)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -68,6 +70,7 @@ class ComicChapter(models.Model):
     name = models.CharField(max_length=50, null=True, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return self.name
 
@@ -78,14 +81,9 @@ class ComicImage(models.Model):
 #/////////////////////////////////////////////
 
 #//////////////Poll///////////////////
-class Poll(models.Model):
+class Poll(Post):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='polls', db_index=True)
-    title = models.CharField(max_length=100)
-    slug = models.SlugField(default="", null=True, unique=True , blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=7, choices=Status.choices, default=Status.PUBLIC)
 
 class PollChoice(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name='choices', db_index=True)
@@ -96,14 +94,9 @@ class PollChoice(models.Model):
 #/////////////////////////////////////////////
 
 #//////////////Quiz///////////////////
-class Quiz(models.Model):
+class Quiz(Post):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='quizzes', db_index=True)
-    title = models.CharField(max_length=100)
-    slug = models.SlugField(default="", null=True, unique=True , blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=7, choices=Status.choices, default=Status.PUBLIC)
 
 class QuizChoice(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='choices', db_index=True)
@@ -112,12 +105,11 @@ class QuizChoice(models.Model):
     answer = models.BooleanField(default=False)
 
 #/////////////////////////////////////////////
-class Blog(models.Model):
+#//////////////Blog///////////////////
+class Blog(Post):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='blogs', db_index=True)
-    title = models.CharField(max_length=100)
     description = QuillField()
-    hashtags = models.ManyToManyField(Hashtag, related_name='blogs',blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=7, choices=Status.choices, default=Status.PUBLIC)
+    hashtags = models.ManyToManyField(Hashtag, related_name='blogs', blank=True)
+#/////////////////////////////////////////////
+
