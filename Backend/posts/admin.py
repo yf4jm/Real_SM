@@ -1,11 +1,6 @@
 from django.contrib import admin
-from .models import (
-    Novel, NovelChapter, Comic, ComicChapter, ComicImage,
-    Poll, PollChoice, Quiz, QuizChoice, Blog, Hashtag
-)
-from .comments import(
-    Comment,Reply
-)
+from .models import (Novel, NovelChapter, Comic, ComicChapter, ComicImage,Poll, PollChoice, Quiz, QuizChoice, Blog, Hashtag)
+
 from .forms import ComicImageForm
 
 class NovelChapterInline(admin.TabularInline):
@@ -82,5 +77,3 @@ class BlogAdmin(admin.ModelAdmin):
 
 # Registering the models not directly managed by the inline classes
 admin.site.register(ComicImage)
-admin.site.register(Comment)
-admin.site.register(Reply)

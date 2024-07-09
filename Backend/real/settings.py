@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'communities.apps.CommunitiesConfig',
     'alliances.apps.AlliancesConfig',
     'users.apps.UsersConfig',
+    'comments.apps.CommentsConfig',
     # 'cosmetics.apps.CosmeticsConfig',
     'django_quill',
     'corsheaders',

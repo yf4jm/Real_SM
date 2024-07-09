@@ -12,13 +12,29 @@ class Status(models.TextChoices):
     PUBLIC = 'PUBLIC', 'Public'
     PRIVATE = 'PRIVATE', 'Private'
 
-class Post(models.Model):
+class PostManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().all()
+
+    def create_post(self, title, **kwargs):
+        slug = kwargs.get('slug') or slugify(title)
+        return self.create(title=title, slug=slug, **kwargs)
+
+class TimeStamp(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class Post(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(default="", null=True, unique=True, blank=True)
     status = models.CharField(max_length=7, choices=Status.choices, default=Status.PUBLIC)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    comments = GenericRelation('Comment')
+    # comments = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True)
+    
+    objects = PostManager()
 
     class Meta:
         abstract = True
@@ -31,45 +47,29 @@ class Hashtag(models.Model):
 
 #///////////////Novel////////////////////////
 class Novel(Post):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='novels', db_index=True)
     media = models.ImageField(default="no_img.png", upload_to='novel_icons/')
     description = models.CharField(max_length=750, blank=True, null=True)
     hashtags = models.ManyToManyField(Hashtag, related_name='novels', blank=True)
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
-
-class NovelChapter(models.Model):
+class NovelChapter(TimeStamp):
     novel = models.ForeignKey(Novel, on_delete=models.CASCADE, related_name='chapters', db_index=True)
     name = models.CharField(max_length=100, null=False, blank=False)
     text = models.TextField(max_length=30000, null=False, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
 #////////////////////////////////////////////
 
 #//////////////Comic///////////////////
 class Comic(Post):
-    id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='comics', db_index=True)
     media = models.ImageField(default="no_img.png", upload_to='comic_icons/')
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
 
-class ComicChapter(models.Model):
+class ComicChapter(TimeStamp):
     comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name='chapters', db_index=True)
     name = models.CharField(max_length=50, null=True, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -82,7 +82,6 @@ class ComicImage(models.Model):
 
 #//////////////Poll///////////////////
 class Poll(Post):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='polls', db_index=True)
 
 class PollChoice(models.Model):
@@ -95,7 +94,6 @@ class PollChoice(models.Model):
 
 #//////////////Quiz///////////////////
 class Quiz(Post):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='quizzes', db_index=True)
 
 class QuizChoice(models.Model):
@@ -107,7 +105,6 @@ class QuizChoice(models.Model):
 #/////////////////////////////////////////////
 #//////////////Blog///////////////////
 class Blog(Post):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='blogs', db_index=True)
     description = QuillField()
     hashtags = models.ManyToManyField(Hashtag, related_name='blogs', blank=True)
