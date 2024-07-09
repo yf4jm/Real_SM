@@ -13,8 +13,8 @@ class Comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     replies = models.ManyToManyField('self', through='Reply', symmetrical=False, related_name='comment_replies')
 
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.UUIDField()
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE,null=True)
+    object_id = models.UUIDField(null=True)
     content_object = GenericForeignKey('content_type', 'object_id')
 
 class Reply(models.Model):

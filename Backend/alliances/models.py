@@ -8,7 +8,7 @@ class Alliance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     icon = models.ImageField(upload_to='alliance_icons/', default='alliance.png')
-    communities = models.ManyToManyField(Community, blank=True)
+    communities = models.ManyToManyField(Community)
     description = models.TextField(max_length=1024)
     created_on = models.DateTimeField(auto_now_add=True)
 
@@ -72,7 +72,13 @@ class AllianceEventMedia(models.Model):
     def __str__(self):
         return f"{self.event.title} Media"
     
-class AllianceContribution(models.Model):
-    contributor = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
+class AllianceMember(models.Model):
+    ROLES_CHOICES=(
+        ('MEMBER','member'),
+        ('OWNER','owner'),
+        ('MODERATOR','moderator')
+    )
     alliance = models.ForeignKey(Alliance, on_delete=models.CASCADE, null=True, blank=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
+    role=models.CharField(max_length=20,default="member",choices=ROLES_CHOICES)
     power = models.FloatField(default=0.0)

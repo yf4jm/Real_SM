@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Alliance, AllianceStats,AllianceMission,AllianceContribution
+from .models import Alliance, AllianceStats,AllianceMission,AllianceMember
 
 @admin.register(Alliance)
 class AllianceAdmin(admin.ModelAdmin):
@@ -19,5 +19,5 @@ class AllianceMissionAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'c_reward', 'coins', 'start_date', 'end_date')
     search_fields = ('name', 'description')
 
-admin.site.register(AllianceContribution)
+admin.site.register(AllianceMember)
 
