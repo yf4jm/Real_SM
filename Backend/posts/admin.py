@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import (Novel, NovelChapter, Comic, ComicChapter, ComicImage,Poll, PollChoice, Quiz, QuizChoice, Blog, Hashtag)
+from .bookmark import PostBookmark
 
 from .forms import ComicImageForm
 
@@ -15,7 +16,7 @@ class ComicChapterInline(admin.StackedInline):
     model = ComicChapter
     extra = 1
     form = ComicImageForm
-    inlines = [ComicImageInline]  # Nesting ComicImageInline within ComicChapterInline
+    inlines = [ComicImageInline] 
 
 class PollChoiceInline(admin.TabularInline):
     model = PollChoice
@@ -32,48 +33,51 @@ class HashtagAdmin(admin.ModelAdmin):
 
 @admin.register(Novel)
 class NovelAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'status', 'created_at', 'updated_at')
+    list_display = ('title', 'author', 'status', 'created_on', 'updated_on')
     search_fields = ('title', 'author__user__username')
     prepopulated_fields = {'slug': ('title',)}
     inlines = [NovelChapterInline]
-    list_filter = ('status', 'created_at', 'updated_at')
+    list_filter = ('status', 'created_on', 'updated_on')
 
 @admin.register(Comic)
 class ComicAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'status', 'created_at', 'updated_at')
+    list_display = ('title', 'author', 'status', 'created_on', 'updated_on')
     search_fields = ('title', 'author__user__username')
     prepopulated_fields = {'slug': ('title',)}
-    inlines = [ComicChapterInline]  # Including ComicChapterInline in ComicAdmin
-    list_filter = ('status', 'created_at', 'updated_at')
+    inlines = [ComicChapterInline]
+    list_filter = ('status', 'created_on', 'updated_on')
 
 @admin.register(ComicChapter)
 class ComicChapterAdmin(admin.ModelAdmin):
-    list_display = ('name', 'comic', 'created_at', 'updated_at')
+    list_display = ('name', 'comic', 'created_on', 'updated_on')
     search_fields = ('name', 'comic__title')
-    inlines = [ComicImageInline]  # Directly registering ComicImageInline here is optional
-    list_filter = ('created_at', 'updated_at')
+    inlines = [ComicImageInline]
+    list_filter = ('created_on', 'updated_on')
 
 @admin.register(Poll)
 class PollAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'status', 'created_at', 'updated_at')
+    list_display = ('title', 'author', 'status', 'created_on', 'updated_on')
     search_fields = ('title', 'author__user__username')
     prepopulated_fields = {'slug': ('title',)}
     inlines = [PollChoiceInline]
-    list_filter = ('status', 'created_at', 'updated_at')
+    list_filter = ('status', 'created_on', 'updated_on')
 
 @admin.register(Quiz)
 class QuizAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'created_at', 'updated_at')
+    list_display = ('title', 'author', 'created_on', 'updated_on')
     search_fields = ('title', 'author__user__username')
+    prepopulated_fields = {'slug': ('title',)}
     inlines = [QuizChoiceInline]
-    list_filter = ('created_at', 'updated_at')
+    list_filter = ('created_on', 'updated_on')
 
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'status', 'created_at', 'updated_at')
+    list_display = ('title', 'author', 'status', 'created_on', 'updated_on')
     search_fields = ('title', 'author__user__username')
     prepopulated_fields = {'slug': ('title',)}
-    list_filter = ('status', 'created_at', 'updated_at')
+    list_filter = ('status', 'created_on', 'updated_on')
 
-# Registering the models not directly managed by the inline classes
+
 admin.site.register(ComicImage)
+admin.site.register(PostBookmark)
+

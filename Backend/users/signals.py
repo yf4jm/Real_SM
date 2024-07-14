@@ -9,7 +9,7 @@ def create_user_profile(sender, instance, created, **kwargs):
         if created:
             profile= Profile.objects.create(user=instance,username=instance.username,name=instance.username)
             # # Assign the default level to the ProfileStats
-            level = ProfileLevel.objects.get(level=1).first()
+            level = ProfileLevel.objects.get(level=1)
             if level:
                 profile_stats = ProfileStats.objects.create(profile=profile, level=level)
             # Add the badge associated with the level

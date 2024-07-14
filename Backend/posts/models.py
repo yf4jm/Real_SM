@@ -1,43 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from users.models import Profile
+from .basepost import Post
+from .timestamp import TimeStamp
 from django.utils.text import slugify
 import uuid
 from django_quill.fields import QuillField
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
-
-class Status(models.TextChoices):
-    DRAFT = 'DRAFT', 'Draft'
-    PUBLIC = 'PUBLIC', 'Public'
-    PRIVATE = 'PRIVATE', 'Private'
-
-class PostManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().all()
-
-    def create_post(self, title, **kwargs):
-        slug = kwargs.get('slug') or slugify(title)
-        return self.create(title=title, slug=slug, **kwargs)
-
-class TimeStamp(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
-
-class Post(TimeStamp):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(default="", null=True, unique=True, blank=True)
-    status = models.CharField(max_length=7, choices=Status.choices, default=Status.PUBLIC)
-    # comments = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True)
-    
-    objects = PostManager()
-
-    class Meta:
-        abstract = True
 
 class Hashtag(models.Model):
     name = models.SlugField(max_length=50, unique=True)

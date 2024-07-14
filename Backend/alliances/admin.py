@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Alliance, AllianceStats,AllianceMission,AllianceMember
+from .models import Alliance, AllianceStats,AllianceMission,AllianceMember,AllianceMissionRewardItem
 
 @admin.register(Alliance)
 class AllianceAdmin(admin.ModelAdmin):
@@ -19,5 +19,13 @@ class AllianceMissionAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'c_reward', 'coins', 'start_date', 'end_date')
     search_fields = ('name', 'description')
 
-admin.site.register(AllianceMember)
 
+@admin.register(AllianceMember)
+class AllianceAllianceMember(admin.ModelAdmin):
+    list_display = ('profile','alliance','role','power')
+    search_fields = ('profile', 'alliance','power')
+    list_filter = ('alliance',)
+@admin.register(AllianceMissionRewardItem)
+class AllianceMissionRewardItemAdmin(admin.ModelAdmin):
+    list_display = ('content_type',)
+    list_filter = ('content_type',)
