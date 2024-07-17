@@ -20,7 +20,6 @@ class Post(TimeStamp):
     title = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(default="", null=True, unique=True, blank=True)
     status = models.CharField(max_length=7, choices=Status.choices, default=Status.PUBLIC)
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='blogs', db_index=True)
     likes = models.ManyToManyField(Profile)
     objects = PostManager()
 

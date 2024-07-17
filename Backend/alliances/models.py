@@ -6,7 +6,8 @@ from users.models import Profile
 
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-
+from django.core.exceptions import ValidationError
+from django.db.models.signals import pre_save
 class Alliance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
@@ -17,6 +18,7 @@ class Alliance(models.Model):
 
     def __str__(self):
         return self.name
+    
 
 class AllianceBadge(models.Model):
     name = models.CharField(max_length=255)
@@ -91,5 +93,15 @@ class AllianceMember(models.Model):
     role=models.CharField(max_length=20,default="member",choices=ROLES_CHOICES)
     power = models.FloatField(default=0.0)
     joined_at = models.DateTimeField(auto_now_add=True)
+    def clean(self):
+        if self.role == 'OWNER':
+            existing_owner = AllianceMember.objects.filter(alliance=self.alliance, role='OWNER').exclude(pk=self.pk)
+            if existing_owner.exists():
+                raise ValidationError("There can't be more than one owner in the alliance.")
+        
+
+    def save(self, *args, **kwargs):
+        self.full_clean()  # This calls the clean method
+        super().save(*args, **kwargs)
     class Meta:
         unique_together = ('alliance', 'profile') 

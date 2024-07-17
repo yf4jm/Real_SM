@@ -17,8 +17,8 @@ class Hashtag(models.Model):
 
 #///////////////Novel////////////////////////
 class Novel(Post):
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='novels', db_index=True)
-    media = models.ImageField(default="no_img.png", upload_to='novel_icons/')
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='novels', db_index=True)
+    media = models.ImageField(default="no_img.png", upload_to='novel_cover/')   
     description = models.CharField(max_length=750, blank=True, null=True)
     hashtags = models.ManyToManyField(Hashtag, related_name='novels', blank=True)
 
@@ -31,8 +31,8 @@ class NovelChapter(TimeStamp):
 
 #//////////////Comic///////////////////
 class Comic(Post):
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='comics', db_index=True)
-    media = models.ImageField(default="no_img.png", upload_to='comic_icons/')
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='comics', db_index=True)
+    media = models.ImageField(default="no_img.png", upload_to='comic_cover/')
 
     def __str__(self):
         return self.title
@@ -52,8 +52,10 @@ class ComicImage(models.Model):
 
 #//////////////Poll///////////////////
 class Poll(Post):
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='polls', db_index=True)
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='polls', db_index=True)
 
+    def __str__(self):
+        return self.title
 class PollChoice(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name='choices', db_index=True)
     votes = models.IntegerField(default=0)
@@ -64,9 +66,12 @@ class PollChoice(models.Model):
 
 #//////////////Quiz///////////////////
 class Quiz(Post):
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='quizzes', db_index=True)
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='quizzes', db_index=True)
+    def __str__(self):
+        return self.title
 
 class QuizChoice(models.Model):
+    media = models.ImageField(upload_to='quiz_icons/',null=True,blank=True)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='choices', db_index=True)
     image = models.ImageField(upload_to='quiz_images/', null=True, blank=True)
     text = models.CharField(max_length=255)
@@ -75,8 +80,9 @@ class QuizChoice(models.Model):
 #/////////////////////////////////////////////
 #//////////////Blog///////////////////
 class Blog(Post):
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='blogs', db_index=True)
+    media = models.ImageField(default="no_img.png", upload_to='blog_cover/',null=True,blank=True)
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='blogs', db_index=True)
     description = QuillField()
-    hashtags = models.ManyToManyField(Hashtag, related_name='blogs', blank=True)
+    hashtags = models.ManyToManyField(Hashtag, related_name='hashtags_blogs', blank=True)
 #/////////////////////////////////////////////
 

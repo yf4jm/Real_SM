@@ -13,7 +13,7 @@ class Comment(TimeStamp):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE,null=True)
     object_id = models.UUIDField(null=True)
     content_object = GenericForeignKey('content_type', 'object_id')
-    likes = models.ManyToManyField(Profile)
+    likes = models.ManyToManyField(Profile,blank=True,related_name='liked_comments')
 
 
 class Reply(TimeStamp):

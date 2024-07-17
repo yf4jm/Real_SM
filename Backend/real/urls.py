@@ -25,6 +25,7 @@ urlpatterns = [
     path('api/',include('alliances.api.urls')),
     path('api/',include('users.api.urls')),
     path('api/',include('posts.api.urls')),
+    path('api/',include('communities.api.urls'))
     
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -3,9 +3,14 @@ from .views import (
     ProfileListCreateView,ProfileDetailView,
     ProfileStatsListCreateView,ProfileStatsDetailView,
     ProfileLevelListCreateView,ProfileLevelDetailView,
-    ProfileBadgeListCreateView,ProfileBadgeDetailView
+    ProfileBadgeListCreateView,ProfileBadgeDetailView,
+    UserListCreateView,UserDetailView
 )
 urlpatterns =[
+path('users/',UserListCreateView.as_view(),name='users-list-create'),
+path('users/<int:pk>/',UserDetailView.as_view(),name='users-detail'),
+
+
 path('profiles/',ProfileListCreateView.as_view(),name='profile-list-create'),
 path('profiles/<uuid:pk>/',ProfileDetailView.as_view(),name='profile-detail'),
 

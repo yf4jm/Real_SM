@@ -1,4 +1,5 @@
 from django.db.models.signals import post_save
+from django.db.models.signals import m2m_changed
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from .models import Alliance,AllianceStats,AllianceMember
@@ -7,14 +8,19 @@ from django.core.exceptions import ValidationError
 def create_Alliance_stats(sender, instance, created, **kwargs):
     if created:
         AllianceStats.objects.create(alliance=instance)
-
-
-@receiver(post_save, sender=AllianceMember)
-def ensure_single_owner_per_alliance(sender, instance, created, **kwargs):
-    if created and instance.role == 'OWNER':
-        alliance = instance.alliance
-        existing_owner = AllianceMember.objects.filter(alliance=alliance, role='OWNER').first()
-        if existing_owner:
-            error_message = "There can't be more than one owner in the alliance."
-            raise ValidationError(error_message)
+@receiver(m2m_changed, sender=Alliance.communities.through)
+def check_alliance_com(sender, instance, action, **kwargs):
+    if action in ["post_add", "post_remove", "post_clear"]:
+        try:
+            stats = AllianceStats.objects.get(alliance=instance)
+        except AllianceStats.DoesNotExist:
+            print(f"AllianceStats for alliance {instance.id} does not exist.")
+            return
+        
+        c_count = stats.comm_count
+        current_communities_count = instance.communities.count()
+        print(f"Current communities count: {current_communities_count}, Allowed communities count: {c_count}")
+        
+        if current_communities_count > c_count:
+            raise ValidationError("You have reached the limit of immigrated communities")
 

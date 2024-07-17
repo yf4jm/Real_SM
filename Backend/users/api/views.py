@@ -1,5 +1,6 @@
 from users.models import Profile,ProfileBadge,ProfileLevel,ProfileStats
-from users.api.serializers import ProfileBadgeSerializer,ProfileLevelSerializer,ProfileSerializer,ProfileStatsSerializer
+from users.api.serializers import (ProfileBadgeSerializer,ProfileLevelSerializer,
+                                   ProfileSerializer,ProfileStatsSerializer,UserSerializer)
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import generics,status
@@ -9,6 +10,16 @@ from django.contrib.auth.models import User
 import re
 from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
+
+class UserListCreateView(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
 
 class ProfileListCreateView(generics.ListCreateAPIView):
     queryset = Profile.objects.all()

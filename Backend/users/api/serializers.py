@@ -1,5 +1,11 @@
 from rest_framework import serializers
 from users.models import Profile,ProfileBadge,ProfileLevel,ProfileStats
+from django.contrib.auth.models import User
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id','username',"is_active"]
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
