@@ -11,6 +11,7 @@ from django.db.models.signals import pre_save
 class Alliance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True,null=True)
     icon = models.ImageField(upload_to='alliance_icons/', default='alliance.png')
     communities = models.ManyToManyField(Community)
     description = models.TextField(max_length=1024)

@@ -11,16 +11,9 @@ def create_Alliance_stats(sender, instance, created, **kwargs):
 @receiver(m2m_changed, sender=Alliance.communities.through)
 def check_alliance_com(sender, instance, action, **kwargs):
     if action in ["post_add", "post_remove", "post_clear"]:
-        try:
-            stats = AllianceStats.objects.get(alliance=instance)
-        except AllianceStats.DoesNotExist:
-            print(f"AllianceStats for alliance {instance.id} does not exist.")
-            return
-        
+        stats = AllianceStats.objects.get(alliance=instance)
         c_count = stats.comm_count
         current_communities_count = instance.communities.count()
-        print(f"Current communities count: {current_communities_count}, Allowed communities count: {c_count}")
-        
         if current_communities_count > c_count:
             raise ValidationError("You have reached the limit of immigrated communities")
 

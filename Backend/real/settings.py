@@ -166,3 +166,25 @@ CORS_ALLOW_CREDENTIALS = True
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+QUILL_CONFIGS = {
+    'default':{
+        'theme': 'snow',
+        'modules': {
+            'syntax': True,
+            'toolbar': [
+                [{ 'header': [False,1, 2, 3, 4, 5, 6] }],
+                [{ 'font': ['inconsolata','monospace','serif'] }],
+                ['bold', 'italic', 'underline', 'strike'],      
+                [{ 'align': [] },{ 'direction': 'rtl' }],
+                
+                ['blockquote', 'code-block'],
+                ['link', 'image', 'video'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+                [{ 'script': 'sub'}, { 'script': 'super' }], 
+                [{ 'indent': '-1'}, { 'indent': '+1' }], 
+                [{ 'color': [] }, { 'background': [] }],
+                ['formula','clean']
+            ]
+        }
+    }
+}

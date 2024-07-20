@@ -5,6 +5,7 @@ from posts.models import (
     Poll,PollChoice,Quiz,QuizChoice,Blog
 )
 from django_quill.fields import FieldQuill
+import json
 class HashtagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hashtag
@@ -68,12 +69,13 @@ class QuizChoiceSerializer(serializers.ModelSerializer):
 
 class QuillFieldSerializer(serializers.Field):
     def to_representation(self, value):
-        # Use the html attribute to get the HTML content
-        return value.html if value else ''
-    
-    def to_internal_value(self, data):
-        return FieldQuill(data)
+        return {
+            'html': value.html,
+            'plain': value.plain,
+        }
 
+    def to_internal_value(self, data):
+        pass
 class BlogSerializer(serializers.ModelSerializer):
     description = QuillFieldSerializer()
     class Meta:
