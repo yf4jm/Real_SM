@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from alliances.models import (
     Alliance,AllianceBadge,AllianceEvent,
-    AllianceEventMedia,AllianceLevel,AllianceMission,AllianceStats
+    AllianceLevel,AllianceMission,AllianceStats
 )
 
 class AllianceSerializer(serializers.ModelSerializer):
@@ -18,10 +18,7 @@ class AllianceEventSerializer(serializers.ModelSerializer):
         model = AllianceEvent
         fields = '__all__'
 
-class AllianceEventMediaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AllianceEventMedia
-        fields = '__all__'
+
 
 class AllianceLevelSerializer(serializers.ModelSerializer):
     class Meta:

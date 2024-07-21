@@ -29,21 +29,23 @@ class AllianceBadge(models.Model):
 
     def __str__(self):
         return self.name
+class AllianceLevel(models.Model):
+    level = models.IntegerField(default=0)
+    badge = models.OneToOneField(AllianceBadge, on_delete=models.CASCADE)
+    c_requirement = models.FloatField(default=0, null=True, blank=True)
+    acquired_on = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"Level {self.level} - {self.badge}"
 class AllianceStats(models.Model):
     alliance = models.OneToOneField(Alliance, on_delete=models.CASCADE, related_name='stats')
     contribution_power = models.FloatField(default=0)
     popularity_points = models.FloatField(default=0)
     coins = models.IntegerField(default=0)
+    level = models.ForeignKey(AllianceLevel,on_delete=models.CASCADE,null=True,blank=True)
     comm_count = models.IntegerField(default=1)
 
-class AllianceLevel(models.Model):
-    level = models.IntegerField(default=0)
-    badge = models.OneToOneField(AllianceBadge, on_delete=models.CASCADE)
-    acquired_on = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"Level {self.level} - {self.badge}"
 
 class AllianceMissionRewardItem(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE,null=True)
@@ -76,13 +78,7 @@ class AllianceEvent(models.Model):
     def __str__(self):
         return self.title
 
-class AllianceEventMedia(models.Model):
-    event = models.ForeignKey(AllianceEvent, on_delete=models.CASCADE, related_name='media_items')
-    image = models.ImageField(upload_to='alliance_event_media/')
 
-    def __str__(self):
-        return f"{self.event.title} Media"
-    
 class AllianceMember(models.Model):
     ROLES_CHOICES=(
         ('MEMBER','member'),
@@ -106,3 +102,4 @@ class AllianceMember(models.Model):
         super().save(*args, **kwargs)
     class Meta:
         unique_together = ('alliance', 'profile') 
+
