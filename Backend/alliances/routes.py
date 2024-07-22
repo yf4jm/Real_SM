@@ -16,9 +16,6 @@ def getRoutes(request):
         {'GET, POST': '/api/alliance-events/'},
         {'GET, PUT, DELETE': '/api/alliance-events/<uuid:pk>'},
 
-        {'GET, POST': '/api/alliance-event-medias/'},
-        {'GET, PUT, DELETE': '/api/alliance-event-medias/<uuid:pk>'}
-        ,
         {'GET, POST': '/api/alliance-levels/'},
         {'GET, PUT, DELETE': '/api/alliance-levels/<uuid:pk>'},
         

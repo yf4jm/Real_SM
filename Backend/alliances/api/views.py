@@ -7,7 +7,7 @@ from alliances.models import (
     Alliance,AllianceBadge,AllianceEvent,
     AllianceLevel,AllianceMission,AllianceStats
 )
-
+from django.http import Http404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import generics,status
@@ -69,6 +69,19 @@ class AllianceStatsListCreateView(generics.ListCreateAPIView):
 
 class AllianceStatsDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = AllianceStats.objects.all()
-    serializer_class = AllianceStats
+    serializer_class = AllianceStatsSerializer
+    def get_object(self):
+        alliance_uuid = self.kwargs.get('pk')
+        try:
+            alliance = Alliance.objects.get(id=alliance_uuid)
+        except Alliance.DoesNotExist:
+            raise Http404("Alliance does not exist")
+        
+        try:
+            alliance_stats = AllianceStats.objects.get(alliance=alliance)
+        except AllianceStats.DoesNotExist:
+            raise Http404("AllianceStats does not exist")
+        
+        return alliance_stats
 
 
