@@ -22,8 +22,8 @@ from .routes import getRoutes
 from alliances.routes import getRoutes as allianceR
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     
     path('api/',include('alliances.api.urls')),
     path('alliances/',allianceR),
@@ -31,7 +31,10 @@ urlpatterns = [
     path('api/',include('users.api.urls')),
     path('api/',include('posts.api.urls')),
     path('api/',getRoutes,name='api-route'),
-    path('api/',include('communities.api.urls'))
+    path('api/',include('communities.api.urls')),
+
+    path('api/',include('chat.api.urls')),
+
     
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

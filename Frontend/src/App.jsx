@@ -7,6 +7,8 @@ import Navbar from './components/navbar/navbar'
 import Community from './pages/community/community'
 import CommunityHome from './pages/community/home';
 import PostCard from './components/cards/post';
+import Chat from './pages/chat'
+import Login from './pages/auth/login';
 function App() {
   return(
     <Router>
@@ -15,6 +17,8 @@ function App() {
         <Route path="/community/:pk" element={<Community />} />
         <Route path="/c/:pk" element={<CommunityHome />} />
         <Route path="/" element={<PostCard />} />
+        <Route path="/chat/:roomId"  element={<Chat />} />
+        <Route path="/login/" element={<Login />} />
       </Routes>
     </Router>
   )
