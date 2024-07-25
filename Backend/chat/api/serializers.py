@@ -1,13 +1,14 @@
 # chat/api/serializers.py
 from rest_framework import serializers
-from chat.models import ChatRoom, Message
-
+from chat.models import ChatRoom, ChatMessage
+from users.api.serializers import UserProfileSerializer
 class ChatRoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatRoom
         fields = ['id', 'name', 'description']
 
-class MessageSerializer(serializers.ModelSerializer):
+class ChatMessageSerializer(serializers.ModelSerializer):
+    profile = UserProfileSerializer()
     class Meta:
-        model = Message
-        fields = ['id', 'room', 'user', 'message', 'timestamp']
+        model = ChatMessage
+        fields = ['profile', 'message', 'timestamp']
