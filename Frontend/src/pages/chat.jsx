@@ -14,7 +14,9 @@ const Chat = () => {
   const handleSendMessage = () => {
     const message = inputRef.current.value;
     if (message.trim()) {
-      chatSocketRef.current.send(JSON.stringify({ 'message': message }));
+      chatSocketRef.current.send(JSON.stringify({ 'message': message,
+                                                  'profile':profile,
+                                                  }));
       inputRef.current.value = '';
     }
   };
@@ -50,11 +52,9 @@ const Chat = () => {
       const data = JSON.parse(e.data);
       console.log('Received data:', data);
 
-      if (data.type === 'id_connection') {
-        console.log('ID connection:', data);
-      } else if (data.message && data.message.trim()) {
+      if (data.message && data.message.trim()) {
         setMessages((prevMessages) => [...prevMessages, data]);
-      }
+       }
     };
 
     chatSocket.onclose = function (e) {
@@ -82,25 +82,17 @@ const Chat = () => {
                 <div className="flex items-center">
                     <>
                       <img
-                        src={message.icon || 'http://127.0.0.1:8000/images/no_icon.png'}
+                        src={message.profile.icon || 'http://127.0.0.1:8000/images/no_icon.png'}
                         alt="Profile Icon"
                         className="w-8 h-8 rounded-full mr-2"
                       />
                       <a
-                        href={`/profile/${message.user_id}`}
+                        href={`/profile/${message.profile.id}`}
                         className="font-bold"
                       >
-                        {message.name}
+                        {message.profile.name}
                       </a>
                     </>
-                  
-                    {message.user_id === profile?.id && profile && (
-                      <img
-                        src={message.icon}
-                        alt="Profile Icon"
-                        className="w-8 h-8 rounded-full mr-2"
-                      />
-                  )}
                 </div>
                 <div>
                   {message.message}

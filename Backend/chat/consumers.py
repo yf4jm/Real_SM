@@ -32,14 +32,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.room_id = self.scope["url_route"]["kwargs"]["room_id"]
         self.room_group_name = f"chat_{self.room_id}"
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                "type": "id_connection",
-                "id": self.room_id,
 
-            }
-        )
         await self.accept()
 
     @database_sync_to_async
@@ -56,18 +49,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
+        profile = text_data_json["profile"]
         await self.channel_layer.group_send(
-            self.room_group_name, {"type": "chat.message", 
-                                   "message": message}
+            self.room_group_name, {"type": "chat_message", 
+                                   "message": message,
+                                   "profile":profile, 
+                                   }
         )
 
     async def chat_message(self, event):
         message = event["message"]
-        await self.send(text_data=json.dumps({"message": message}))
+        profile = event["profile"]
+        await self.send(text_data=json.dumps({"message": message,
+                                              "profile":profile
+                                              }))
 
-    async def id_connection(self, event):
-        room_id = event['id']
-        await self.send(text_data=json.dumps({
-            'type': 'connection established',
-            'id': room_id
-        }))
