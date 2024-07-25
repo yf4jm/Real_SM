@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-
+    const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -20,7 +20,7 @@ const Login = () => {
             localStorage.setItem('refresh_token', response.data.refresh);
 
             // Redirect or perform any other actions after successful login
-            window.location.href = '/'; // Redirect to home or dashboard
+            navigate('/'); // Redirect to home or dashboard
         } catch (err) {
             console.error('Login error:', err);
             setError('Invalid credentials');

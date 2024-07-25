@@ -1,17 +1,50 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Api from '../AxiosInstance';
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
-  const messageInputRef = useRef(null);
+  const [profile, setProfile] = useState(null);
   const chatLogRef = useRef(null);
   const { roomId } = useParams();
-  const chatSocketRef = useRef(null); // Ref to hold WebSocket instance
+  const chatSocketRef = useRef(null);
+  const inputRef = useRef();
+  const accessToken = localStorage.getItem("access_token");
+
+  const handleSendMessage = () => {
+    const message = inputRef.current.value;
+    if (message.trim()) {
+      chatSocketRef.current.send(JSON.stringify({ 'message': message }));
+      inputRef.current.value = '';
+    }
+  };
 
   useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await Api.get('/api/profile/');
+        setProfile(response.data);
+        
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+
+    if (accessToken) {
+      fetchProfile();
+    }
+    
     // Create WebSocket connection
-    const chatSocket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${roomId}/`);
+    const chatSocket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${roomId}/?token=${accessToken}`);
     chatSocketRef.current = chatSocket; // Store WebSocket instance in ref
+
+    chatSocket.onopen = () => {
+      console.log('WebSocket connection established');
+    };
+
+    chatSocket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
 
     chatSocket.onmessage = function (e) {
       const data = JSON.parse(e.data);
@@ -19,42 +52,21 @@ const Chat = () => {
 
       if (data.type === 'id_connection') {
         console.log('ID connection:', data);
-      } else if (data.message && data.message.trim()) { // Filter out empty messages
-        setMessages((prevMessages) => [...prevMessages, data.message]);
+      } else if (data.message && data.message.trim()) {
+        setMessages((prevMessages) => [...prevMessages, data]);
       }
     };
 
     chatSocket.onclose = function (e) {
-      console.error('Chat socket closed unexpectedly');
+      console.error('Chat socket closed unexpectedly', e);
     };
-
-    const handleKeyUp = (e) => {
-      if (e.key === 'Enter') {
-        handleSendMessage();
-      }
-    };
-
-    const handleSendMessage = () => {
-      const message = messageInputRef.current.value;
-      if (message.trim()) {
-        chatSocketRef.current.send(JSON.stringify({ 'message': message }));
-        messageInputRef.current.value = '';
-      }
-    };
-
-    // Add event listeners for keyup and click
-    const inputField = messageInputRef.current;
-    const submitButton = document.querySelector('#chat-message-submit');
-
-    inputField.addEventListener('keyup', handleKeyUp);
-    submitButton.addEventListener('click', handleSendMessage);
 
     return () => {
+      // Clean up the WebSocket connection when the component unmounts
       chatSocket.close();
-      inputField.removeEventListener('keyup', handleKeyUp);
-      submitButton.removeEventListener('click', handleSendMessage);
     };
-  }, [roomId]);
+  }, [roomId, accessToken]);
+
 
   return (
     <div className="flex flex-col h-screen max-w-4xl mx-auto bg-gray-100">
@@ -66,8 +78,33 @@ const Chat = () => {
             className="flex-1 overflow-y-auto mb-4 p-2 border border-gray-300 rounded-lg bg-gray-50"
           >
             {messages.map((message, index) => (
-              <div key={index} className="p-2 mb-2 bg-gray-200 rounded-lg">
-                {message}
+              <div key={index} className={`p-2 mb-2 rounded-lg`}>
+                <div className="flex items-center">
+                    <>
+                      <img
+                        src={message.icon || 'http://127.0.0.1:8000/images/no_icon.png'}
+                        alt="Profile Icon"
+                        className="w-8 h-8 rounded-full mr-2"
+                      />
+                      <a
+                        href={`/profile/${message.user_id}`}
+                        className="font-bold"
+                      >
+                        {message.name}
+                      </a>
+                    </>
+                  
+                    {message.user_id === profile?.id && profile && (
+                      <img
+                        src={message.icon}
+                        alt="Profile Icon"
+                        className="w-8 h-8 rounded-full mr-2"
+                      />
+                  )}
+                </div>
+                <div>
+                  {message.message}
+                </div>
               </div>
             ))}
           </div>
@@ -77,14 +114,14 @@ const Chat = () => {
         <div className="flex">
           <input
             id="chat-message-input"
-            ref={messageInputRef}
             type="text"
+            ref={inputRef}
             className="flex-1 border border-gray-300 rounded-lg p-2 mr-2"
             placeholder="Type a message..."
           />
           <button
             id="chat-message-submit"
-            onClick={() => handleSendMessage()} // Call handleSendMessage correctly
+            onClick={handleSendMessage}
             className="bg-blue-500 text-white rounded-lg p-2"
           >
             Send
