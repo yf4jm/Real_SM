@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState ,useContext } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Context } from '../../App';
+import Api from '../../AxiosInstance';
+
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
+    if(localStorage.getItem("access_token")){
+        document.location.href = '/';
+    }
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -18,9 +22,9 @@ const Login = () => {
             // Store tokens in local storage
             localStorage.setItem('access_token', response.data.access);
             localStorage.setItem('refresh_token', response.data.refresh);
-
+            localStorage.setItem("active", "true");
             // Redirect or perform any other actions after successful login
-            navigate('/'); // Redirect to home or dashboard
+            document.location.href = '/'; // Redirect to home or dashboard
         } catch (err) {
             console.error('Login error:', err);
             setError('Invalid credentials');

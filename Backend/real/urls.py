@@ -20,11 +20,12 @@ from django.conf.urls.static import static
 from django.conf import settings
 from .routes import getRoutes
 from alliances.routes import getRoutes as allianceR
+from .views import LogoutView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    
+    path('logout/',LogoutView.as_view(), name='logout'),
     path('api/',include('alliances.api.urls')),
     path('alliances/',allianceR),
 

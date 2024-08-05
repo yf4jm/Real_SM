@@ -6,9 +6,11 @@ from .views import (
     ProfileBadgeListCreateView,ProfileBadgeDetailView,
     UserListCreateView,UserDetailView,
 
-    UserProfileView
+    UserProfileView,ProfileInfoView
 )
 urlpatterns =[
+path('profile-info',ProfileInfoView.as_view(),name='profile-info'),
+
 path('profile/',UserProfileView.as_view(),name='profile'),
 
 path('users/',UserListCreateView.as_view(),name='users-list-create'),

@@ -1,6 +1,8 @@
+// Chat.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import Api from "../AxiosInstance";
+import Api from "../../AxiosInstance";
+import createWebSocket from "./websocket";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -28,7 +30,7 @@ const Chat = () => {
 
   const handleSendMessage = () => {
     const message = inputRef.current.value;
-    if (message.trim() && profile) { // Check if profile is available
+    if (message.trim() && profile) {
       chatSocketRef.current.send(
         JSON.stringify({ message: message, profile: profile })
       );
@@ -51,31 +53,18 @@ const Chat = () => {
     }
 
     // Create WebSocket connection
-    const chatSocket = new WebSocket(
-      `ws://127.0.0.1:8000/ws/chat/${roomId}/?token=${accessToken}`
+    const chatSocket = createWebSocket(
+      roomId,
+      accessToken,
+      (data) => {
+        if (data.message && data.message.trim()) {
+          setMessages((prevMessages) => [...prevMessages, data]);
+        }
+      },
+      (error) => setError("WebSocket error"),
+      (e) => console.error("Chat socket closed unexpectedly", e)
     );
     chatSocketRef.current = chatSocket; // Store WebSocket instance in ref
-
-    chatSocket.onopen = () => {
-      console.log("WebSocket connection established");
-    };
-
-    chatSocket.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-
-    chatSocket.onmessage = function (e) {
-      const data = JSON.parse(e.data);
-      console.log("Received data:", data);
-
-      if (data.message && data.message.trim()) {
-        setMessages((prevMessages) => [...prevMessages, data]);
-      }
-    };
-
-    chatSocket.onclose = function (e) {
-      console.error("Chat socket closed unexpectedly", e);
-    };
 
     return () => {
       // Clean up the WebSocket connection when the component unmounts

@@ -3,6 +3,7 @@ from users.models import Profile,ProfileBadge,ProfileLevel,ProfileStats
 from django.contrib.auth.models import User
 
 
+
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
@@ -15,11 +16,12 @@ class UserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = '__all__'
+        fields = ["id","icon","name","username","email","bio","birth_date","created_on"]
 class ProfileBadgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfileBadge
         fields = '__all__'
+
 
 class ProfileLevelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,4 +31,4 @@ class ProfileLevelSerializer(serializers.ModelSerializer):
 class ProfileStatsSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfileStats
-        fields = '__all__'
+        fields = ['contribution_power','coins','level','badges']
