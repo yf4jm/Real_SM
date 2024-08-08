@@ -80,7 +80,7 @@ class QuizChoice(models.Model):
 #/////////////////////////////////////////////
 #//////////////Blog///////////////////
 class Blog(Post):
-    media = models.ImageField(default="no_img.png", upload_to='blog_cover/',null=True,blank=True)
+    media = models.ImageField(upload_to='blog_cover/',null=True,blank=True)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='blogs', db_index=True)
     description = QuillField()
     hashtags = models.ManyToManyField(Hashtag, related_name='hashtags_blogs', blank=True)

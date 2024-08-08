@@ -9,6 +9,8 @@ import Chat from './pages/chat/chat';
 import Login from './pages/auth/login';
 import React from 'react';
 import SideLink from './components/alliance/sideLink';
+import RealHome from './pages/home/home';
+import Page_404 from './pages/error/404_page';
 export const Context = React.createContext();
 
 function App() {
@@ -20,9 +22,10 @@ function App() {
         <Navbar />
         {/* <SideLink /> */}
         <Routes>
+          <Route path='/error/404' element={<Page_404 />}></Route>
           <Route path="/community/:pk" element={<Community />} />
           <Route path="/c/:pk" element={<CommunityHome />} />
-          <Route path="/" element={<PostCard />} />
+          <Route path="/" element={<RealHome />} />
           <Route path="/chat/:roomId" element={<Chat />} />
           <Route path="/login/" element={<Login />} />
         </Routes>

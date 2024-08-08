@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Button from '../../components/buttons/btn1';
 import axios from 'axios';
+import CommuntiyRouteHandler from './RouteHandler';
 
 const Community = () => {
   const { pk } = useParams(); // Get pk from route parameters
   const [community, setCommunity] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  
   useEffect(() => {
     document.body.classList.add('bg-gradient-to-r', 'from-neutral-700', 'to-zinc-950');
   
@@ -20,9 +21,8 @@ const Community = () => {
   useEffect(() => {
     const fetchCommunity = async () => {
       try {
-        const url = `http://127.0.0.1:8000/api/communities/${pk}/`;
-        const response = await axios.get(url);
-        setCommunity(response.data);
+        const response = await CommuntiyRouteHandler(pk)
+        setCommunity(response);
       } catch (error) {
         console.error("Error fetching community:", error); // Log the error
         setError(error);
