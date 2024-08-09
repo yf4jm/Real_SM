@@ -76,7 +76,7 @@ const PostCard = ({ id, title, author, description, is_liked, likes_count, media
             <div className='flex items-center gap-3'>
         <img src={author.icon} alt={author.name} className='h-10 w-10 rounded-full object-cover' />
         <div>
-          <h2 className='text-lg font-bold text-gray-800'>{author.name}</h2>
+          <h2 className='text-lg font-medium text-gray-800'>{author.name}</h2>
           <p className='text-sm text-gray-500'>{formattedDate}</p>
         </div>
       </div>

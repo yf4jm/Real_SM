@@ -80,7 +80,7 @@ const CommunityHome = () => {
               {cData && (
                 <>
                   <img src={cData.image} alt="" className="lg:w-1/2 w-36"/>
-                  <p className="text-xl font-semibold">sports</p>
+                  <p className="text-xl font-semibold">{cData.name}</p>
                 </>
               )}
             </li>

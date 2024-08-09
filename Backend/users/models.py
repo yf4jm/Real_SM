@@ -20,6 +20,7 @@ class Profile(models.Model):
     icon = models.ImageField(default="no_icon.png", upload_to='profile_icons/')
     name = models.CharField(max_length=50, default="")
     username = models.SlugField(max_length=50)
+    alliance = models.ForeignKey('alliances.Alliance', null=True,blank=True,on_delete=models.CASCADE)
     email = models.EmailField(max_length=50, blank=True, null=True, validators=[EmailValidator])
     bio = models.CharField(max_length=160, blank=True, null=True, default="")
     birth_date = models.DateField(blank=True, null=True)

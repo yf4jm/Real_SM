@@ -10,9 +10,9 @@ from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_save
 class Alliance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255,unique=True)
     slug = models.SlugField(unique=True,null=True)
-    icon = models.ImageField(upload_to='alliance_icons/', default='alliance.png')
+    icon = models.ImageField(upload_to='alliance_icons/', default='alliance.png',null=True)
     communities = models.ManyToManyField(Community)
     description = models.TextField(max_length=1024)
     created_on = models.DateTimeField(auto_now_add=True)

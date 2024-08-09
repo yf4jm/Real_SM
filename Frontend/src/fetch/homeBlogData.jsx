@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const HomeBlogData = async (profile_id) => {
+const homeBlogData = async (profile_id) => {
   try {
     const blogResponse = await axios.get(`http://127.0.0.1:8000/api/blogs?profile_id=${profile_id}`);
     return blogResponse.data;
@@ -10,4 +10,4 @@ const HomeBlogData = async (profile_id) => {
   }
 };
 
-export default HomeBlogData;
+export default homeBlogData;

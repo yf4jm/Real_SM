@@ -9,6 +9,7 @@ class ChatRoom(models.Model):
     ]
     name = models.CharField(max_length=100, default="")
     profiles = models.ManyToManyField(Profile,blank=True)
+    alliance = models.ForeignKey('alliances.Alliance',on_delete=models.CASCADE,null=False,blank=False)
     chat_type = models.CharField(max_length=10, choices=CHAT_ROOM_TYPE_CHOICES, default='group')
 
 

@@ -24,7 +24,7 @@ class AllianceListCreateView(generics.ListCreateAPIView):
 
 class AllianceDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Alliance.objects.all()
-    serializer_class = Alliance
+    serializer_class = AllianceSerializer
 
 class AllianceBadgeListCreateView(generics.ListCreateAPIView):
     queryset = AllianceBadge.objects.all()

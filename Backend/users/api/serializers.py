@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ['id', 'name', 'icon']
+        fields = ['id', 'name', 'icon','alliance']
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ["id","icon","name","username","email","bio","birth_date","created_on"]
+        fields = ["id","icon","name","username","email","bio","birth_date","alliance","created_on"]
 class ProfileBadgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfileBadge

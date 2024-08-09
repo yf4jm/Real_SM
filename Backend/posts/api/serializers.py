@@ -94,7 +94,7 @@ class BlogSerializer(serializers.ModelSerializer):
     is_liked = serializers.SerializerMethodField()
     likes_count = serializers.SerializerMethodField()
     author = UserProfileSerializer()
-
+    
     class Meta:
         model = Blog
         fields = ['id', 'title', 'description', 'status', 'author', 'media','created_on', 'is_liked', 'likes_count']

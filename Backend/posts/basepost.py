@@ -3,6 +3,7 @@ import uuid
 from django.utils.text import slugify
 from .timestamp import TimeStamp
 from users.models import Profile
+from alliances.models import Alliance
 class Status(models.TextChoices):
     DRAFT = 'DRAFT', 'Draft'
     PUBLIC = 'PUBLIC', 'Public'
@@ -17,10 +18,11 @@ class PostManager(models.Manager):
         return self.create(title=title, slug=slug, **kwargs)
 class Post(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(default="", null=True, unique=True, blank=True)
+    title = models.CharField(max_length=100)
+    slug = models.SlugField(default="", null=True, blank=True)
     status = models.CharField(max_length=7, choices=Status.choices, default=Status.PUBLIC)
     likes = models.ManyToManyField(Profile,blank=True)
+    alliance = models.ForeignKey(Alliance,on_delete=models.DO_NOTHING,null=True,blank=True)
     objects = PostManager()
 
     class Meta:
