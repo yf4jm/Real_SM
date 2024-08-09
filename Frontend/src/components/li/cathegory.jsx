@@ -1,9 +1,9 @@
 import React from 'react'
-
-const Cli = ({value}) => {
+import { Link } from 'react-router-dom';
+const Cli = ({value,url}) => {
   return (
     <div>
-      <li className='rounded-full p-3 bg-black text-white'>{value}</li>
+      <Link to={url}><li className='rounded-full p-3 bg-black text-white'>{value}</li></Link>
     </div>
   )
 }
