@@ -12,7 +12,7 @@ import CommuntiyRouteHandler from './RouteHandler';
 import Lisidebar from '../../components/li/sidebar';
 import { Link } from 'react-router-dom';
 import Cli from '../../components/li/cathegory';
-import HomeIcon from '@mui/icons-material/Home';
+
 const CommunityHome = () => {
   const { pk } = useParams();
   const [isVisible, setIsVisible] = useState(false);
@@ -93,19 +93,14 @@ const CommunityHome = () => {
       <div className='flex-grow p-5 overflow-y-auto lg:mx-auto lg:max-w-3xl bg-slate-100'>
         <div className='sticky top-0 m-0'>
           <div className='relative flex items-center justify-center'>
-
             <button 
               onClick={scrollLeft} 
-              className='absolute left-14 bg-gray-300 rounded-full flex items-center justify-center h-8 w-8'>
+              className='absolute left-3 bg-gray-300 rounded-full flex items-center justify-center h-8 w-8'>
               <ArrowBackIosIcon className='text-sm' />
             </button>
-            <ul>
-            <Cli value={<HomeIcon />} url="/"/>
-            </ul>
             <ul 
               ref={cliContainerRef} 
               className='flex gap-3 overflow-x-auto no-scrollbar ml-12 mr-12'>
-              
               <Cli value="featured" />
               <Cli value="blogs" />
               <Cli value="novels" />
