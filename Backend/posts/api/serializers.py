@@ -48,7 +48,6 @@ class PollChoiceSerializer(serializers.ModelSerializer):
         fields = ['votes','text','image']
 class PollSerializer(serializers.ModelSerializer):
     choices = PollChoiceSerializer(many=True, read_only=True)
-    type = serializers.SerializerMethodField()
     class Meta:
         model = Poll
         fields = '__all__'
@@ -60,16 +59,11 @@ class QuizChoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuizChoice
         fields = '__all__'
-
 class QuizSerializer(serializers.ModelSerializer):
     choices = QuizChoiceSerializer(many=True, read_only=True)
-    type = serializers.SerializerMethodField()
     class Meta:
         model = Quiz
         fields = '__all__'
-    def get_type(self, obj):
-        return "quiz"
-    
 
 
 
@@ -102,7 +96,6 @@ class BlogSerializer(serializers.ModelSerializer):
     is_liked = serializers.SerializerMethodField()
     likes_count = serializers.SerializerMethodField()
     author = UserProfileSerializer()
-    type = serializers.SerializerMethodField()
 
     class Meta:
         model = Blog
@@ -117,6 +110,5 @@ class BlogSerializer(serializers.ModelSerializer):
 
     def get_likes_count(self, obj):
         return obj.likes.count()
-    def get_type(self, obj):
-        return "blog"
+
 

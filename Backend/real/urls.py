@@ -21,7 +21,9 @@ from django.conf import settings
 from .routes import getRoutes
 from alliances.routes import getRoutes as allianceR
 from .views import LogoutView
+import debug_toolbar
 urlpatterns = [
+    path('__debug__/',include(debug_toolbar.urls)),
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

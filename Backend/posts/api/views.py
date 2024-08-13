@@ -15,6 +15,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from .serializers import HashtagSerializer, NovelSerializer, NovelChapterSerializer, ComicSerializer, ComicChapterSerializer, ComicImageSerializer, PollSerializer, PollChoiceSerializer, QuizSerializer, QuizChoiceSerializer, BlogSerializer
 from django.contrib.contenttypes.models import ContentType
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+
 class LikeToggleView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -35,9 +38,10 @@ class LikeToggleView(APIView):
         
         post.save()
         return Response({'liked': liked, 'likes_count': post.likes.count()}, status=status.HTTP_200_OK)
-
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class UserPostsView(APIView):
     def get(self, request, profile_id):
+        
         # Fetch all posts created by the user
         polls = Poll.objects.filter(author_id=profile_id)
         quizzes = Quiz.objects.filter(author_id=profile_id)

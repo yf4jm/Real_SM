@@ -26,12 +26,13 @@ SECRET_KEY = "django-insecure-dn0vj8mr++h=68!k-dqx7*pca@7vkp-hpzt&4p^7c01pik6srs
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
-
+INTERNAL_IPS =[
+    '127.0.0.1'
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
     "chat",
+    "debug_toolbar"
 ]
 
 
@@ -70,6 +72,7 @@ CHANNEL_LAYERS = {
 }
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -79,7 +82,12 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+    }
+}
 ROOT_URLCONF = "real.urls"
 
 TEMPLATES = [
@@ -164,13 +172,14 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_LIFETIME_LATE_USER": timedelta(days=1),
     "SLIDING_TOKEN_LIFETIME_LATE_USER": timedelta(days=30),
 }
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
 }
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
 STATIC_URL = "/static/"
 MEDIA_URL = "/images/"
 STATICFILES_DIRS = [

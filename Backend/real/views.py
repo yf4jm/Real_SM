@@ -26,3 +26,4 @@ class LogoutView(APIView):
         except Exception as e:
             logger.error(f"Error blacklisting refresh token: {str(e)}")
             return Response({"error": "Something went wrong while logging out."}, status=status.HTTP_400_BAD_REQUEST)
+        

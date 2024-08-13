@@ -12,6 +12,7 @@ from .views import (
     QuizChoiceListCreateView, QuizChoiceDetailView,
     BlogListCreateView, BlogDetailView,LikeToggleView,UserPostsView
 )
+from django.views.decorators.cache import cache_page
 
 urlpatterns = [
     path('user/<uuid:profile_id>/posts/', UserPostsView.as_view(), name='user-posts'),
@@ -48,6 +49,6 @@ urlpatterns = [
     path('quiz-choices/', QuizChoiceListCreateView.as_view(), name='quiz-choice-list-create'),
     path('quiz-choices/<int:pk>/', QuizChoiceDetailView.as_view(), name='quiz-choice-detail'),
     
-    path('blogs/', BlogListCreateView.as_view(), name='blog-list-create'),
+    path('blogs/', cache_page(60*15)(BlogListCreateView.as_view()), name='blog-list-create'),
     path('blogs/<uuid:pk>/', BlogDetailView.as_view(), name='blog-detail'),
 ]
