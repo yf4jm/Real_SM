@@ -10,10 +10,13 @@ from .views import (
     PollChoiceListCreateView, PollChoiceDetailView,
     QuizListCreateView, QuizDetailView,
     QuizChoiceListCreateView, QuizChoiceDetailView,
-    BlogListCreateView, BlogDetailView,LikeToggleView
+    BlogListCreateView, BlogDetailView,LikeToggleView,UserPostsView
 )
 
 urlpatterns = [
+    path('user/<uuid:profile_id>/posts/', UserPostsView.as_view(), name='user-posts'),
+
+
     path('<str:post_type>/<uuid:post_id>/like/', LikeToggleView.as_view(), name='like-toggle'),
     path('hashtags/', HashtagListCreateView.as_view(), name='hashtag-list-create'),
     path('hashtags/<int:pk>/', HashtagDetailView.as_view(), name='hashtag-detail'),

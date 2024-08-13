@@ -4,6 +4,9 @@ from posts.models import (
     Poll,PollChoice,Quiz,QuizChoice,Blog
 )
 from rest_framework.response import Response
+from django.db.models import Q
+from itertools import chain
+from operator import attrgetter
 from rest_framework.views import APIView
 from users.models import Profile
 from rest_framework import generics
@@ -32,6 +35,28 @@ class LikeToggleView(APIView):
         
         post.save()
         return Response({'liked': liked, 'likes_count': post.likes.count()}, status=status.HTTP_200_OK)
+
+class UserPostsView(APIView):
+    def get(self, request, profile_id):
+        # Fetch all posts created by the user
+        polls = Poll.objects.filter(author_id=profile_id)
+        quizzes = Quiz.objects.filter(author_id=profile_id)
+        blogs = Blog.objects.filter(author_id=profile_id)
+
+        # Serialize the data
+        poll_serializer = PollSerializer(polls, many=True)
+        quiz_serializer = QuizSerializer(quizzes, many=True)
+        blog_serializer = BlogSerializer(blogs, many=True)
+
+        # Combine and sort by created_on field
+        all_posts = list(chain(
+            poll_serializer.data,
+            quiz_serializer.data,
+            blog_serializer.data
+        ))
+        all_posts_sorted = sorted(all_posts, key=lambda x: x['created_on'], reverse=True)
+
+        return Response(all_posts_sorted, status=status.HTTP_200_OK)
 
 
 # Hashtag Views

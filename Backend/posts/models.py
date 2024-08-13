@@ -73,8 +73,8 @@ class Quiz(Post):
 class QuizChoice(models.Model):
     media = models.ImageField(upload_to='quiz_icons/',null=True,blank=True)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='choices', db_index=True)
-    image = models.ImageField(upload_to='quiz_images/', null=True, blank=True)
     text = models.CharField(max_length=255)
+    votes = models.IntegerField(default=0)
     answer = models.BooleanField(default=False)
 
 #/////////////////////////////////////////////
