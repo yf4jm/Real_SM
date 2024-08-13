@@ -11,6 +11,8 @@ import React from 'react';
 import SideLink from './components/alliance/sideLink';
 import RealHome from './pages/home/home';
 import Page_404 from './pages/error/404_page';
+import ProfileDetails from './pages/profile/ProfileDetails';
+
 export const Context = React.createContext();
 
 function App() {
@@ -28,6 +30,7 @@ function App() {
           <Route path="/" element={<RealHome />} />
           <Route path="/chat/:roomId" element={<Chat />} />
           <Route path="/login/" element={<Login />} />
+          <Route path='/profile/:pk' element={<ProfileDetails/>} />
         </Routes>
         
       </Router>

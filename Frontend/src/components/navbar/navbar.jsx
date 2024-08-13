@@ -65,7 +65,7 @@ const Navbar = () => {
                             {isOpen && (
                                 <div className="absolute top-10 right-0 w-48 bg-white rounded-lg shadow-lg mt-2 z-10">
                                     <ul className="py-2">
-                                    <Link to="/profile">
+                                    <Link to={`/profile/${profile.id}`}>
                                         <li className="px-4 py-2 text-gray-700 hover:bg-gray-100">
                                             Profile
                                         </li>

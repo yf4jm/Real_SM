@@ -13,9 +13,11 @@ from .views import (
     AllianceMissionDetailView,
     AllianceStatsListCreateView,
     AllianceStatsDetailView,
+    ProfileAllianceView,
 )
 
 urlpatterns = [
+    path('profile-alliance/<uuid:pk>',ProfileAllianceView.as_view(),name='profile-alliance'),
     # Routes for alliances
     path('alliances/', AllianceListCreateView.as_view(), name='alliance-list-create'),
     path('alliances/<uuid:pk>', AllianceDetailView.as_view(), name='alliance-detail'),

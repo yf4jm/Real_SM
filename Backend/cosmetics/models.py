@@ -19,3 +19,5 @@ class Sticker(models.Model):
 
     def __str__(self):
         return self.name
+
+#make a Background class

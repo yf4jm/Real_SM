@@ -42,18 +42,18 @@ Api.interceptors.response.use(
         } catch (refreshError) {
           console.error('Failed to refresh token:', refreshError);
           window.localStorage.clear();
-          if (window.location.pathname !== '/login') {
+          // if (window.location.pathname !== '/login') {
             
             
-            document.location.href = '/login';
-          }
+          //   document.location.href = '/login';
+          // }
         }
       } else {
         window.localStorage.clear();
-        if (window.location.pathname !== '/login') {
-          console.log(2);
-          document.location.href = '/login';
-        }
+        // if (window.location.pathname !== '/login') {
+        //   console.log(2);
+        //   document.location.href = '/login';
+        // }
       }
     }
     return Promise.reject(error);

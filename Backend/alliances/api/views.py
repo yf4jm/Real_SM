@@ -1,11 +1,11 @@
 from .serializers import(
     AllianceBadgeSerializer,
     AllianceEventSerializer,AllianceLevelSerializer,AllianceMissionSerializer,AllianceSerializer,
-    AllianceStatsSerializer
+    AllianceStatsSerializer,AllianceMemberSerializer
 )
 from alliances.models import (
     Alliance,AllianceBadge,AllianceEvent,
-    AllianceLevel,AllianceMission,AllianceStats
+    AllianceLevel,AllianceMission,AllianceStats,AllianceMember
 )
 from django.http import Http404
 from rest_framework.decorators import api_view
@@ -18,6 +18,17 @@ import re
 from rest_framework.permissions import IsAuthenticated
 
 
+class ProfileAllianceView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = AllianceMember.objects.all()
+    serializer_class = AllianceMemberSerializer
+    def get_object(self):
+        try:
+            profile_uuid = self.kwargs.get('pk')
+            allianceMember = AllianceMember.objects.get(profile=profile_uuid)
+        except AllianceMember.DoesNotExist:
+            raise Http404("this profile doesn't belong to any alliance")
+        return allianceMember
+            
 class AllianceListCreateView(generics.ListCreateAPIView):
     queryset = Alliance.objects.all()
     serializer_class = AllianceSerializer

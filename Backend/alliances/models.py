@@ -86,7 +86,7 @@ class AllianceMember(models.Model):
         ('MODERATOR','moderator')
     )
     alliance = models.ForeignKey(Alliance, on_delete=models.CASCADE, null=True, blank=True)
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, null=True, blank=True)
     role=models.CharField(max_length=20,default="member",choices=ROLES_CHOICES)
     power = models.FloatField(default=0.0)
     joined_at = models.DateTimeField(auto_now_add=True)
@@ -100,6 +100,4 @@ class AllianceMember(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()  # This calls the clean method
         super().save(*args, **kwargs)
-    class Meta:
-        unique_together = ('alliance', 'profile') 
 
