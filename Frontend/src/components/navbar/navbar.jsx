@@ -45,6 +45,7 @@ const Navbar = () => {
         localStorage.clear()
         document.location.href = '/login';
     };
+    
 
     return (
         <nav className='m-0 w-full p-2 flex justify-between items-center text-gray-50 bg-gradient-to-r from-pink-700 to-gray-900'>
