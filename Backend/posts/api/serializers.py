@@ -103,7 +103,6 @@ class BlogSerializer(serializers.ModelSerializer):
 
     def get_is_liked(self, obj):
         profile_id = self.context.get('profile_id')
-        print(profile_id)
         if profile_id is not None:
             return obj.likes.filter(id=profile_id).exists()
         return False

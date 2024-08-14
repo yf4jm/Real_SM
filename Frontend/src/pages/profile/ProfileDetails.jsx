@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Context } from '../../App';
 import defaultProfileIcon from '../../assets/guild-icon.svg';
 import defaultAllianceIcon from '../../assets/guild-icon.svg';
-import bg from '../../assets/bg.jpg';
+import bg from '../../assets/bg.avif';
 
 const ProfileDetails = () => {
   const [profile] = useContext(Context);
@@ -83,13 +83,16 @@ const ProfileDetails = () => {
                     key={community.slug}
                   >
                     {community.name}
+                    
                   </li>
                 ))}
               </ul>
+              
             </div>
           </div>
         </div>
       </div>
+
     </div>
   );
 };
