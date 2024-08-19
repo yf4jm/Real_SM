@@ -91,7 +91,6 @@ class QuillFieldSerializer(serializers.Field):
 class BlogSerializer(serializers.ModelSerializer):
     description = QuillFieldSerializer()
     is_liked = serializers.SerializerMethodField()
-    likes_count = serializers.SerializerMethodField()
     author = UserProfileSerializer()
 
     class Meta:
@@ -104,7 +103,5 @@ class BlogSerializer(serializers.ModelSerializer):
             return obj.likes.filter(id=profile_id).exists()
         return False
 
-    def get_likes_count(self, obj):
-        return obj.likes.count()
 
 

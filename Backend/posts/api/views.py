@@ -30,10 +30,12 @@ class LikeToggleView(APIView):
         if post.likes.filter(id=user_profile.id).exists():
             # User has already liked this post, so we remove the like
             post.likes.remove(user_profile)
+            post.likes_count -=1
             liked = False
         else:
             # User has not liked this post, so we add the like
             post.likes.add(user_profile)
+            post.likes_count +=1
             liked = True
         
         post.save()
@@ -148,7 +150,7 @@ class QuizChoiceDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 # Blog Views
 
-
+# @method_decorator(cache_page(60 * 15), name='dispatch')
 class BlogListCreateView(generics.ListCreateAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer

@@ -46,6 +46,6 @@ urlpatterns = [
     path('quiz-choices/', QuizChoiceListCreateView.as_view(), name='quiz-choice-list-create'),
     path('quiz-choices/<int:pk>/', QuizChoiceDetailView.as_view(), name='quiz-choice-detail'),
     
-    path('blogs/', cache_page(60*15)(BlogListCreateView.as_view()), name='blog-list-create'),
+    path('blogs/', BlogListCreateView.as_view(), name='blog-list-create'),
     path('blogs/<uuid:pk>/', BlogDetailView.as_view(), name='blog-detail'),
 ]
