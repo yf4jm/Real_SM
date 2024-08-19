@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
     "chat",
-    "debug_toolbar"
+    "debug_toolbar",
+    "search"
 ]
 
 

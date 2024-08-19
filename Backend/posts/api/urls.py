@@ -1,6 +1,5 @@
 from django.urls import path
 from .views import (
-    HashtagListCreateView, HashtagDetailView,
     NovelListCreateView, NovelDetailView,
     NovelChapterListCreateView, NovelChapterDetailView,
     ComicListCreateView, ComicDetailView,
@@ -19,8 +18,6 @@ urlpatterns = [
 
 
     path('<str:post_type>/<uuid:post_id>/like/', LikeToggleView.as_view(), name='like-toggle'),
-    path('hashtags/', HashtagListCreateView.as_view(), name='hashtag-list-create'),
-    path('hashtags/<int:pk>/', HashtagDetailView.as_view(), name='hashtag-detail'),
     
     path('novels/', NovelListCreateView.as_view(), name='novel-list-create'),
     path('novels/<uuid:pk>/', NovelDetailView.as_view(), name='novel-detail'),

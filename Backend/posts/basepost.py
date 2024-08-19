@@ -22,6 +22,6 @@ class Post(TimeStamp):
     status = models.CharField(max_length=7, choices=Status.choices, default=Status.PUBLIC)
     likes = models.ManyToManyField(Profile,blank=True)
     objects = PostManager()
-
     class Meta:
         abstract = True
+    

@@ -1,16 +1,13 @@
 from rest_framework import serializers
 from posts.models import (
-    Hashtag,Novel,NovelChapter,
+    Keyword,Novel,NovelChapter,
     Comic,ComicChapter,ComicImage,
     Poll,PollChoice,Quiz,QuizChoice,Blog
 )
 from users.api.serializers import UserProfileSerializer
 from django_quill.fields import FieldQuill
 import json
-class HashtagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Hashtag
-        fields = '__all__'
+
 
 
 class NovelSerializer(serializers.ModelSerializer):

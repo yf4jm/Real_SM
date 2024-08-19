@@ -1,13 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../buttons/btn1';
 import { Context } from '../../App';
 import { fetchProfile } from '../../fetch/navProfileData';
+import SearchInput from '../inputs/search';
 import Api from '../../AxiosInstance';
+
 const Navbar = () => {
     const [profile, setProfile] = useContext(Context);
     const [loading, setLoading] = useState(true);
-    const [isOpen, setIsOpen] = useState(false); // State to manage dropdown visibility
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef(null); // Ref for detecting outside clicks
 
     useEffect(() => {
         const checkUserProfile = async () => {
@@ -19,38 +22,54 @@ const Navbar = () => {
             } catch (error) {
                 console.error('Failed to fetch profile:', error);
             } finally {
-                setLoading(false); // Set loading to false after fetching
+                setLoading(false);
             }
         };
 
         checkUserProfile();
     }, [setProfile]);
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     if (loading) {
-        return null; // Optionally return a loading spinner or nothing
+        return <div className="loader">Loading...</div>; // Replace with your loader component
     }
 
     const toggleDropdown = () => {
-        setIsOpen(!isOpen); // Toggle dropdown visibility
+        setIsOpen(!isOpen);
     };
 
-    const handleLogout = async() => {
-        try{
-            const refresh_token = localStorage.getItem("refresh_token")
-            await Api.post("http://127.0.0.1:8000/logout/",{"refresh_token":refresh_token});
-        }catch(error){
-            console.error(error)
+    const handleLogout = async () => {
+        try {
+            const refresh_token = localStorage.getItem("refresh_token");
+            await Api.post("http://127.0.0.1:8000/logout/", { "refresh_token": refresh_token });
+        } catch (error) {
+            console.error('Logout failed:', error);
+            alert("Failed to logout. Please try again.");
+        } finally {
+            localStorage.clear();
+            document.location.href = '/login';
         }
-        
-        localStorage.clear()
-        document.location.href = '/login';
     };
-    
 
     return (
-        <nav className='m-0 w-full p-2 flex justify-between items-center text-gray-50 bg-gradient-to-r from-pink-700 to-gray-900'>
+        <nav className='m-0 w-full p-2 flex gap-5 justify-between items-center text-gray-50 bg-gradient-to-r from-pink-700 to-gray-900'>
             <div>
                 <Link to="/"><h1>Real</h1></Link>
+            </div>
+            <div className='w-3/5 hidden md:block'>
+            <SearchInput className="" />
             </div>
             <ul className='flex justify-between gap-5 items-center'>
                 <li>Home</li>
@@ -63,23 +82,23 @@ const Navbar = () => {
                                 <p>{profile.name}</p>
                             </div>
                             {isOpen && (
-                                <div className="absolute top-10 right-0 w-48 bg-white rounded-lg shadow-lg mt-2 z-10">
+                                <div ref={dropdownRef} className="absolute top-10 right-0 w-48 bg-white rounded-lg shadow-lg mt-2 z-10">
                                     <ul className="py-2">
-                                    <Link to={`/profile/${profile.id}`}>
-                                        <li className="px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                            Profile
-                                        </li>
-                                    </Link>
-                                    <Link to="/settings">
-                                        <li className="px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                            Settings
-                                        </li>
-                                    </Link>
-                                    <Link to="/help">
-                                        <li className="px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                            Help
-                                        </li>
-                                    </Link>
+                                        <Link to={`/profile/${profile.id}`}>
+                                            <li className="px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                                Profile
+                                            </li>
+                                        </Link>
+                                        <Link to="/settings">
+                                            <li className="px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                                Settings
+                                            </li>
+                                        </Link>
+                                        <Link to="/help">
+                                            <li className="px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                                Help
+                                            </li>
+                                        </Link>
                                         <hr className="my-1 border-gray-200" />
                                         <li className="px-4 py-2 text-gray-700 hover:bg-red-100">
                                             <button onClick={handleLogout} className="w-full text-left">Logout</button>

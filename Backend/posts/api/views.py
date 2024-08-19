@@ -1,5 +1,5 @@
 from posts.models import (
-    Hashtag,Novel,NovelChapter,
+    Keyword,Novel,NovelChapter,
     Comic,ComicChapter,ComicImage,
     Poll,PollChoice,Quiz,QuizChoice,Blog
 )
@@ -13,7 +13,7 @@ from rest_framework import generics
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
-from .serializers import HashtagSerializer, NovelSerializer, NovelChapterSerializer, ComicSerializer, ComicChapterSerializer, ComicImageSerializer, PollSerializer, PollChoiceSerializer, QuizSerializer, QuizChoiceSerializer, BlogSerializer
+from .serializers import NovelSerializer, NovelChapterSerializer, ComicSerializer, ComicChapterSerializer, ComicImageSerializer, PollSerializer, PollChoiceSerializer, QuizSerializer, QuizChoiceSerializer, BlogSerializer
 from django.contrib.contenttypes.models import ContentType
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -63,14 +63,7 @@ class UserPostsView(APIView):
         return Response(all_posts_sorted, status=status.HTTP_200_OK)
 
 
-# Hashtag Views
-class HashtagListCreateView(generics.ListCreateAPIView):
-    queryset = Hashtag.objects.all()
-    serializer_class = HashtagSerializer
 
-class HashtagDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Hashtag.objects.all()
-    serializer_class = HashtagSerializer
 
 # Novel Views
 class NovelListCreateView(generics.ListCreateAPIView):

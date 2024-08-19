@@ -28,14 +28,15 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('logout/',LogoutView.as_view(), name='logout'),
-    path('api/',include('alliances.api.urls')),
-    path('alliances/',allianceR),
 
+    path('alliances/',allianceR),
+    
+    path('api/',include('alliances.api.urls')),
+    path('api/',include('search.api.urls')),
     path('api/',include('users.api.urls')),
     path('api/',include('posts.api.urls')),
     path('api/',getRoutes,name='api-route'),
     path('api/',include('communities.api.urls')),
-
     path('api/',include('chat.api.urls')),
 
     

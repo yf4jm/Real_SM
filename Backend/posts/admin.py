@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import (Novel, NovelChapter, Comic, ComicChapter, ComicImage,Poll, PollChoice, Quiz, QuizChoice, Blog, Hashtag)
+from .models import (Novel, NovelChapter, Comic, ComicChapter, ComicImage,Poll, PollChoice, Quiz, QuizChoice, Blog, Keyword)
 from .bookmark import PostBookmark
 
 from .forms import ComicImageForm
@@ -26,10 +26,6 @@ class QuizChoiceInline(admin.TabularInline):
     model = QuizChoice
     extra = 1
 
-@admin.register(Hashtag)
-class HashtagAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
 
 @admin.register(Novel)
 class NovelAdmin(admin.ModelAdmin):
