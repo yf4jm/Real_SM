@@ -17,7 +17,7 @@ from .serializers import NovelSerializer, NovelChapterSerializer, ComicSerialize
 from django.contrib.contenttypes.models import ContentType
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-
+from django.db.models import Prefetch
 class LikeToggleView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -114,11 +114,11 @@ class ComicImageDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 # Poll Views
 class PollListCreateView(generics.ListCreateAPIView):
-    queryset = Poll.objects.all()
+    queryset = Poll.objects.all().prefetch_related("choices")
     serializer_class = PollSerializer
 
 class PollDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Poll.objects.all()
+    queryset = Poll.objects.all().prefetch_related("choices")
     serializer_class = PollSerializer
 
 # PollChoice Views
@@ -132,11 +132,11 @@ class PollChoiceDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 # Quiz Views
 class QuizListCreateView(generics.ListCreateAPIView):
-    queryset = Quiz.objects.all()
+    queryset = Quiz.objects.all().prefetch_related("choices")
     serializer_class = QuizSerializer
 
 class QuizDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Quiz.objects.all()
+    queryset = Quiz.objects.all().prefetch_related("choices")
     serializer_class = QuizSerializer
 
 # QuizChoice Views

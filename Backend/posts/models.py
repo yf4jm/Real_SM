@@ -9,6 +9,7 @@ from django_quill.fields import QuillField
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from search.models import Keyword
+from django.db.models import Prefetch
 # class Keyword(models.Model):
 #     name = models.SlugField(max_length=50, unique=True)
 
@@ -30,6 +31,7 @@ class NovelChapter(TimeStamp):
 #////////////////////////////////////////////
 
 #//////////////Comic///////////////////
+
 class Comic(Post):
     author = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='comics', db_index=True)
     media = models.ImageField(default="no_img.png", upload_to='comic_cover/')
@@ -51,9 +53,9 @@ class ComicImage(models.Model):
 #/////////////////////////////////////////////
 
 #//////////////Poll///////////////////
+
 class Poll(Post):
     author = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='polls', db_index=True)
-
     def __str__(self):
         return self.title
 class PollChoice(models.Model):

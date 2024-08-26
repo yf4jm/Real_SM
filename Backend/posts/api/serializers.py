@@ -11,10 +11,16 @@ import json
 
 
 class NovelSerializer(serializers.ModelSerializer):
+    author = UserProfileSerializer()
+    is_liked = serializers.SerializerMethodField()
     class Meta:
         model = Novel
-        fields = '__all__'
-
+        fields = ['id','author','created_on','updated_on','title','slug','status','likes_count','media','is_liked']
+    def get_is_liked(self, obj):
+        profile_id = self.context.get('profile_id')
+        if profile_id is not None:
+            return obj.likes.filter(id=profile_id).exists()
+        return False
 
 class NovelChapterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,10 +29,16 @@ class NovelChapterSerializer(serializers.ModelSerializer):
 
 
 class ComicSerializer(serializers.ModelSerializer):
+    author = UserProfileSerializer()
+    is_liked = serializers.SerializerMethodField()
     class Meta:
         model = Comic
-        fields = '__all__'
-
+        fields = ['id', 'title', 'slug', 'status', 'author', 'media', 'likes_count','is_liked']
+    def get_is_liked(self, obj):
+        profile_id = self.context.get('profile_id')
+        if profile_id is not None:
+            return obj.likes.filter(id=profile_id).exists()
+        return False
 
 class ComicChapterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -45,10 +57,16 @@ class PollChoiceSerializer(serializers.ModelSerializer):
         fields = ['votes','text','image']
 class PollSerializer(serializers.ModelSerializer):
     choices = PollChoiceSerializer(many=True, read_only=True)
+    is_liked = serializers.SerializerMethodField()
+    author = UserProfileSerializer()
     class Meta:
         model = Poll
-        fields = '__all__'
-
+        fields = ['id','choices','created_on','updated_on','title','slug','status','likes_count','author','is_liked']
+    def get_is_liked(self, obj):
+        profile_id = self.context.get('profile_id')
+        if profile_id is not None:
+            return obj.likes.filter(id=profile_id).exists()
+        return False
 
 
 
@@ -58,9 +76,16 @@ class QuizChoiceSerializer(serializers.ModelSerializer):
         fields = '__all__'
 class QuizSerializer(serializers.ModelSerializer):
     choices = QuizChoiceSerializer(many=True, read_only=True)
+    is_liked = serializers.SerializerMethodField()
+    author = UserProfileSerializer()
     class Meta:
         model = Quiz
-        fields = '__all__'
+        fields = ['id','choices','author','created_on','updated_on','title','slug','status','likes_count','is_liked']
+    def get_is_liked(self, obj):
+        profile_id = self.context.get('profile_id')
+        if profile_id is not None:
+            return obj.likes.filter(id=profile_id).exists()
+        return False
 
 
 

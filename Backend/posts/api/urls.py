@@ -41,7 +41,7 @@ urlpatterns = [
     path('poll-choices/<int:pk>/', PollChoiceDetailView.as_view(), name='poll-choice-detail'),
     
     path('quizzes/', QuizListCreateView.as_view(), name='quiz-list-create'),
-    path('quizzes/<int:pk>/', QuizDetailView.as_view(), name='quiz-detail'),
+    path('quizzes/<uuid:pk>/', QuizDetailView.as_view(), name='quiz-detail'),
     
     path('quiz-choices/', QuizChoiceListCreateView.as_view(), name='quiz-choice-list-create'),
     path('quiz-choices/<int:pk>/', QuizChoiceDetailView.as_view(), name='quiz-choice-detail'),
