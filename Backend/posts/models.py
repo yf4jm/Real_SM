@@ -10,6 +10,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from search.models import Keyword
 from django.db.models import Prefetch
+from .managers import PollManager,QuizManager
+
 # class Keyword(models.Model):
 #     name = models.SlugField(max_length=50, unique=True)
 
@@ -56,6 +58,7 @@ class ComicImage(models.Model):
 
 class Poll(Post):
     author = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='polls', db_index=True)
+    objects = PollManager()
     def __str__(self):
         return self.title
 class PollChoice(models.Model):
@@ -69,6 +72,7 @@ class PollChoice(models.Model):
 #//////////////Quiz///////////////////
 class Quiz(Post):
     author = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='quizzes', db_index=True)
+    objects = QuizManager()
     def __str__(self):
         return self.title
 

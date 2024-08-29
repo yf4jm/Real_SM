@@ -8,6 +8,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_save
+
+from .managers import AllianceManager,AllianceStatsManager,AllianceMemberManager,AllianceLevelManager
+
 class Alliance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
@@ -16,7 +19,7 @@ class Alliance(models.Model):
     communities = models.ManyToManyField(Community)
     description = models.TextField(max_length=1024)
     created_on = models.DateTimeField(auto_now_add=True)
-
+    objects = AllianceManager()
     def __str__(self):
         return self.name
     
@@ -34,9 +37,11 @@ class AllianceLevel(models.Model):
     badge = models.OneToOneField(AllianceBadge, on_delete=models.CASCADE)
     c_requirement = models.FloatField(default=0, null=True, blank=True)
     acquired_on = models.DateTimeField(auto_now_add=True)
-
+    objects = AllianceLevelManager()
     def __str__(self):
         return f"Level {self.level} - {self.badge}"
+
+
 class AllianceStats(models.Model):
     alliance = models.OneToOneField(Alliance, on_delete=models.CASCADE, related_name='stats')
     contribution_power = models.FloatField(default=0)
@@ -44,6 +49,7 @@ class AllianceStats(models.Model):
     coins = models.IntegerField(default=0)
     level = models.ForeignKey(AllianceLevel,on_delete=models.CASCADE,null=True,blank=True)
     comm_count = models.IntegerField(default=1)
+    objects = AllianceStatsManager()
 
 
 
@@ -90,6 +96,7 @@ class AllianceMember(models.Model):
     role=models.CharField(max_length=20,default="member",choices=ROLES_CHOICES)
     power = models.FloatField(default=0.0)
     joined_at = models.DateTimeField(auto_now_add=True)
+    objects = AllianceMemberManager()
     def clean(self):
         if self.role == 'OWNER':
             existing_owner = AllianceMember.objects.filter(alliance=self.alliance, role='OWNER').exclude(pk=self.pk)

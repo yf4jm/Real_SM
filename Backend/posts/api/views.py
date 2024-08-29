@@ -40,7 +40,7 @@ class LikeToggleView(APIView):
         
         post.save()
         return Response({'liked': liked, 'likes_count': post.likes.count()}, status=status.HTTP_200_OK)
-@method_decorator(cache_page(60 * 15), name='dispatch')
+# @method_decorator(cache_page(60 * 15), name='dispatch')
 class UserPostsView(APIView):
     def get(self, request, profile_id):
         
@@ -49,10 +49,10 @@ class UserPostsView(APIView):
         quizzes = Quiz.objects.filter(author_id=profile_id)
         blogs = Blog.objects.filter(author_id=profile_id)
 
-        # Serialize the data
-        poll_serializer = PollSerializer(polls, many=True)
-        quiz_serializer = QuizSerializer(quizzes, many=True)
-        blog_serializer = BlogSerializer(blogs, many=True)
+        # Serialize the data with request context
+        poll_serializer = PollSerializer(polls, many=True, context={'request': request})
+        quiz_serializer = QuizSerializer(quizzes, many=True, context={'request': request})
+        blog_serializer = BlogSerializer(blogs, many=True, context={'request': request})
 
         # Combine and sort by created_on field
         all_posts = list(chain(
@@ -114,11 +114,11 @@ class ComicImageDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 # Poll Views
 class PollListCreateView(generics.ListCreateAPIView):
-    queryset = Poll.objects.all().prefetch_related("choices")
+    queryset = Poll.objects.all()
     serializer_class = PollSerializer
 
 class PollDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Poll.objects.all().prefetch_related("choices")
+    queryset = Poll.objects.all()
     serializer_class = PollSerializer
 
 # PollChoice Views
@@ -132,11 +132,11 @@ class PollChoiceDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 # Quiz Views
 class QuizListCreateView(generics.ListCreateAPIView):
-    queryset = Quiz.objects.all().prefetch_related("choices")
+    queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
 
 class QuizDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Quiz.objects.all().prefetch_related("choices")
+    queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
 
 # QuizChoice Views

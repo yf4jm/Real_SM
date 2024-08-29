@@ -17,7 +17,7 @@ function App() {
         <header className="sticky top-0 z-50 "> 
           <Navbar />
           </header>
-            <AppRoutes /> {/* Use your routes component here */}
+            <AppRoutes />
       </Router>
     </Context.Provider>
   );

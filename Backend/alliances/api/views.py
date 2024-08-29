@@ -35,7 +35,7 @@ class AllianceListCreateView(generics.ListCreateAPIView):
 
 class AllianceDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Alliance.objects.all()
-    serializer_class = Alliance
+    serializer_class = AllianceSerializer
 
 class AllianceBadgeListCreateView(generics.ListCreateAPIView):
     queryset = AllianceBadge.objects.all()
@@ -43,7 +43,7 @@ class AllianceBadgeListCreateView(generics.ListCreateAPIView):
 
 class AllianceBadgeDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = AllianceBadge.objects.all()
-    serializer_class = AllianceBadge
+    serializer_class = AllianceBadgeSerializer
 
 
 class AllianceEventListCreateView(generics.ListCreateAPIView):
@@ -52,7 +52,7 @@ class AllianceEventListCreateView(generics.ListCreateAPIView):
 
 class AllianceEventDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = AllianceEvent.objects.all()
-    serializer_class = AllianceEvent
+    serializer_class = AllianceEventSerializer
 
 
 class AllianceLevelListCreateView(generics.ListCreateAPIView):
@@ -61,7 +61,7 @@ class AllianceLevelListCreateView(generics.ListCreateAPIView):
 
 class AllianceLevelDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = AllianceLevel.objects.all()
-    serializer_class = AllianceLevel
+    serializer_class = AllianceLevelSerializer
 
 
 class AllianceMissionListCreateView(generics.ListCreateAPIView):
@@ -70,7 +70,7 @@ class AllianceMissionListCreateView(generics.ListCreateAPIView):
 
 class AllianceMissionDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = AllianceMission.objects.all()
-    serializer_class = AllianceMission
+    serializer_class = AllianceMissionSerializer
 
 
 
@@ -79,7 +79,6 @@ class AllianceStatsListCreateView(generics.ListCreateAPIView):
     serializer_class = AllianceStatsSerializer
 
 class AllianceStatsDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = AllianceStats.objects.all()
     serializer_class = AllianceStatsSerializer
     def get_object(self):
         alliance_uuid = self.kwargs.get('pk')
@@ -89,7 +88,7 @@ class AllianceStatsDetailView(generics.RetrieveUpdateDestroyAPIView):
             raise Http404("Alliance does not exist")
         
         try:
-            alliance_stats = AllianceStats.objects.get(alliance=alliance)
+            alliance_stats = AllianceStats.objects.filter(alliance=alliance).first()
         except AllianceStats.DoesNotExist:
             raise Http404("AllianceStats does not exist")
         

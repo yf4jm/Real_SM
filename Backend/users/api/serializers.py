@@ -5,9 +5,17 @@ from django.contrib.auth.models import User
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    icon = serializers.SerializerMethodField()
+
     class Meta:
         model = Profile
         fields = ['id', 'name', 'icon']
+
+    def get_icon(self, obj):
+        request = self.context.get('request')
+        if request and obj.icon:
+            return request.build_absolute_uri(obj.icon.url)
+        return obj.icon.url if obj.icon else None
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

@@ -1,66 +1,74 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../App';
 import defaultProfileIcon from '../../assets/guild-icon.svg';
 import defaultAllianceIcon from '../../assets/guild-icon.svg';
 import bg from '../../assets/bg.avif';
+import profileAllianceData from '../../fetch/profileAllianceData';
+import profileFetch from '../../fetch/profile/profileFetch';
+import { useParams } from 'react-router-dom';
+import profilePostsFetch from '../../fetch/profile/profilePostsFetch';
+import PostCard from '../../components/cards/post';
 
 const ProfileDetails = () => {
   const [profile] = useContext(Context);
-    
-  // Static random data
-  const staticProfile = {
-    icon: profile?.icon || defaultProfileIcon,
-    name: "John Doe",
-    username: "johndoe123",
-    email: "johndoe@example.com",
-    bio: "Just a random user on the internet.",
-    birth_date: "1990-01-01",
-    created_on: "2024-07-14T13:24:45.587629Z",
-  };
+  const [allianceData, setAllianceData] = useState(null);
+  const [profileData, setProfileData] = useState(null);
+  const [postsData, setPostsData] = useState(null);
+  const { pk } = useParams();
 
-  const staticAlliance = {
-    icon: defaultAllianceIcon,
-    name: "Random Alliance",
-    description: "This is a description of a random alliance.",
-    community_list: [
-      { slug: "community-1", name: "Community One" },
-      { slug: "community-2", name: "Community Two" },
-    ],
-  };
+  useEffect(() => {
+    const fetchProfileDetails = async () => {
+      const profileResponse = await profileFetch(pk);
+      setProfileData(profileResponse);
+      const allianceResponse = await profileAllianceData(pk);
+      setAllianceData(allianceResponse.alliance);
+      const profilePostsResponse = await profilePostsFetch(pk);
+      setPostsData(profilePostsResponse);
+    };
+    fetchProfileDetails();
+  }, [pk]);
+
+  if (!profileData || !allianceData) {
+    return <div>Loading...</div>;
+  }
 
   return (
-<div 
-  className="min-h-screen flex justify-center items-center bg-repeat" 
-  style={{ backgroundImage: `url(${bg})` }}
->
+    <div
+      className="min-h-screen flex justify-center items-center bg-repeat"
+      style={{ backgroundImage: `url(${bg})` }}
+    >
       <div className="max-w-2xl w-full p-6 bg-white shadow-lg rounded-lg">
         <div className="flex justify-center mb-6">
           <img
-            src={staticProfile.icon}
+            src={profileData.icon || defaultProfileIcon}
             alt="Profile Icon"
             className="w-32 h-32 rounded-full border-4 border-gray-300"
           />
         </div>
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">{staticProfile.name}</h1>
-          <p className="text-gray-500">@{staticProfile.username}</p>
-          {staticProfile.bio && <p className="text-gray-600 mt-2">{staticProfile.bio}</p>}
+          <h1 className="text-3xl font-bold text-gray-800">{profileData.name}</h1>
+          <p className="text-gray-500">@{profileData.username}</p>
+          {profileData.bio && <p className="text-gray-600 mt-2">{profileData.bio}</p>}
         </div>
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-700">Profile Information</h2>
           <ul className="mt-4 space-y-2">
-            <li className="flex justify-between">
-              <span className="text-gray-600">Email:</span>
-              <span className="text-gray-800">{staticProfile.email}</span>
-            </li>
-            <li className="flex justify-between">
-              <span className="text-gray-600">Birth Date:</span>
-              <span className="text-gray-800">{staticProfile.birth_date}</span>
-            </li>
+            {profileData.email && (
+              <li className="flex justify-between">
+                <span className="text-gray-600">Email:</span>
+                <span className="text-gray-800">{profileData.email}</span>
+              </li>
+            )}
+            {profileData.birth_date && (
+              <li className="flex justify-between">
+                <span className="text-gray-600">Birth Date:</span>
+                <span className="text-gray-800">{profileData.birth_date}</span>
+              </li>
+            )}
             <li className="flex justify-between">
               <span className="text-gray-600">Member Since:</span>
               <span className="text-gray-800">
-                {new Date(staticProfile.created_on).toLocaleDateString()}
+                {new Date(profileData.created_on).toLocaleDateString()}
               </span>
             </li>
           </ul>
@@ -69,30 +77,47 @@ const ProfileDetails = () => {
           <h2 className="text-xl font-semibold text-gray-700">Alliance</h2>
           <div className="mt-4 flex items-center">
             <img
-              src={staticAlliance.icon}
+              src={allianceData.icon || defaultAllianceIcon}
               alt="Alliance Icon"
               className="w-12 h-12 rounded-full border-2 border-gray-300 mr-4"
             />
             <div>
-              <p className="text-gray-800 text-lg">{staticAlliance.name}</p>
-              <p className="text-gray-600 text-sm">{staticAlliance.description}</p>
+              <p className="text-gray-800 text-lg">{allianceData.name}</p>
+              <p className="text-gray-600 text-sm">{allianceData.description}</p>
               <ul className="flex flex-wrap justify-center gap-2 mt-2">
-                {staticAlliance.community_list.map((community) => (
+                {allianceData.community_list?.map((community) => (
                   <li
                     className="text-white bg-blue-600 p-2 rounded-full text-sm"
                     key={community.slug}
                   >
                     {community.name}
-                    
                   </li>
                 ))}
               </ul>
-              
             </div>
           </div>
         </div>
+        <div>
+          {postsData &&
+            postsData.map((postData) => (
+              postData.type === 'blog' && (
+                <div className='my-5'>
+                <PostCard
+                  key={postData.id}
+                  id={postData.id}
+                  title={postData.title}
+                  author={postData.author}
+                  description={postData.description}
+                  is_liked={postData.is_liked}
+                  likes_count={postData.likes_count}
+                  media={postData.media}
+                  created_on={postData.created_on}
+                />
+                </div>
+              )
+            ))}
+        </div>
       </div>
-
     </div>
   );
 };

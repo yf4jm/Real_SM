@@ -6,6 +6,7 @@ from alliances.models import (
 from communities.api.serializers import CommunitySerializer,CommunityAllianceSerializer
 from communities.models import Community
 class AllianceSerializer(serializers.ModelSerializer):
+    communities = CommunityAllianceSerializer(many=True)
     class Meta:
         model = Alliance
         fields = '__all__'
@@ -22,18 +23,21 @@ class AllianceEventSerializer(serializers.ModelSerializer):
 
 
 class AllianceLevelSerializer(serializers.ModelSerializer):
+    badge = AllianceBadgeSerializer()
     class Meta:
         model = AllianceLevel
-        fields = '__all__'
+        fields = ['badge','level','acquired_on']
+        
 class AllianceMissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = AllianceMission
         fields = '__all__'
 
 class AllianceStatsSerializer(serializers.ModelSerializer):
+    level = AllianceLevelSerializer()
     class Meta:
         model = AllianceStats
-        fields = '__all__'
+        fields = ['contribution_power','popularity_points','coins','level']
 
 class ProfileAllianceSerializer(serializers.ModelSerializer):
     communities = serializers.ListField(child=serializers.SlugField(), write_only=True)

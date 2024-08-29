@@ -14,7 +14,7 @@ from .views import (
 from django.views.decorators.cache import cache_page
 
 urlpatterns = [
-    path('user/<uuid:profile_id>/posts/', UserPostsView.as_view(), name='user-posts'),
+    path('profile/<uuid:profile_id>/posts/', UserPostsView.as_view(), name='user-posts'),
 
 
     path('<str:post_type>/<uuid:post_id>/like/', LikeToggleView.as_view(), name='like-toggle'),

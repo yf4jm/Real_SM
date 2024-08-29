@@ -8,7 +8,7 @@ import Login from './pages/auth/login';
 import RealHome from './pages/home/home';
 import Page_404 from './pages/error/404_page';
 import ProfileDetails from './pages/profile/ProfileDetails';
-
+import HorizentalImages from './components/containers/horizentalImages';
 const AppRoutes = () => {
   return (
     <Routes>
@@ -19,6 +19,7 @@ const AppRoutes = () => {
       <Route path="/chat/:roomId" element={<Chat />} />
       <Route path="/login/" element={<Login />} />
       <Route path='/profile/:pk' element={<ProfileDetails />} />
+      <Route path='/test/' element={<HorizentalImages />} />
     </Routes>
   );
 };
