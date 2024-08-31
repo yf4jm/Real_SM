@@ -63,7 +63,7 @@ class Poll(Post):
         return self.title
 class PollChoice(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name='choices', db_index=True)
-    votes = models.IntegerField(default=0)
+    votes = models.ManyToManyField(Profile,blank=True)
     image = models.ImageField(upload_to='poll_images/', null=True, blank=True)
     text = models.CharField(max_length=100)
 

@@ -66,7 +66,6 @@ class UserPostsView(APIView):
 
 
 
-
 # Novel Views
 class NovelListCreateView(generics.ListCreateAPIView):
     queryset = Novel.objects.all()
@@ -155,19 +154,8 @@ class BlogListCreateView(generics.ListCreateAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
 
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        # Access profile_id from the query parameters
-        context.update({"profile_id": self.request.query_params.get('profile_id')})
-        return context
 
 
 class BlogDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
-
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        # Access profile_id from the query parameters
-        context.update({"profile_id": self.request.query_params.get('profile_id')})
-        return context

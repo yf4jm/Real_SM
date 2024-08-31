@@ -1,8 +1,11 @@
 import React from 'react'
 import Api from '../../AxiosInstance'
-const profilePostsFetch = async (profile_id) => {
+import axios from 'axios'
+const profilePostsFetch = async (profile_id,active_profile=null) => {
     try{
-        const res = await Api.get(`http://127.0.0.1:8000/api/profile/${profile_id}/posts/`)
+        const res = await axios.get(`http://127.0.0.1:8000/api/profile/${profile_id}/posts/`,{
+            params: { profile_id: active_profile },
+        })
          return res.data
 
     }catch(error){

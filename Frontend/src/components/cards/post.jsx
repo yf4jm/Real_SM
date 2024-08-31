@@ -12,6 +12,7 @@ const PostCard = ({ id, title, author, description, is_liked, likes_count, media
   const [liked, setLiked] = useState(is_liked);
   const [likeCount, setLikeCount] = useState(likes_count);
 
+  
   useEffect(() => {
     setLiked(is_liked);
   }, [is_liked]);

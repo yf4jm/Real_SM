@@ -8,25 +8,35 @@ import profileFetch from '../../fetch/profile/profileFetch';
 import { useParams } from 'react-router-dom';
 import profilePostsFetch from '../../fetch/profile/profilePostsFetch';
 import PostCard from '../../components/cards/post';
+import PollCard from '../../components/cards/poll';
 
 const ProfileDetails = () => {
   const [profile] = useContext(Context);
   const [allianceData, setAllianceData] = useState(null);
   const [profileData, setProfileData] = useState(null);
-  const [postsData, setPostsData] = useState(null);
+  const [postsData, setPostsData] = useState([]);
   const { pk } = useParams();
 
   useEffect(() => {
     const fetchProfileDetails = async () => {
-      const profileResponse = await profileFetch(pk);
-      setProfileData(profileResponse);
-      const allianceResponse = await profileAllianceData(pk);
-      setAllianceData(allianceResponse.alliance);
-      const profilePostsResponse = await profilePostsFetch(pk);
-      setPostsData(profilePostsResponse);
+      try {
+        const [profileResponse, allianceResponse, postsResponse] = await Promise.all([
+          profileFetch(pk),
+          profileAllianceData(pk),
+          profilePostsFetch(pk, profile?.id)
+        ]);
+
+        setProfileData(profileResponse);
+        setAllianceData(allianceResponse.alliance);
+        setPostsData(postsResponse);
+
+      } catch (error) {
+        console.error("Error fetching profile details:", error);
+      }
     };
+
     fetchProfileDetails();
-  }, [pk]);
+  }, [pk, profile]);
 
   if (!profileData || !allianceData) {
     return <div>Loading...</div>;
@@ -98,24 +108,39 @@ const ProfileDetails = () => {
           </div>
         </div>
         <div>
-          {postsData &&
-            postsData.map((postData) => (
-              postData.type === 'blog' && (
-                <div className='my-5'>
-                <PostCard
-                  key={postData.id}
-                  id={postData.id}
-                  title={postData.title}
-                  author={postData.author}
-                  description={postData.description}
-                  is_liked={postData.is_liked}
-                  likes_count={postData.likes_count}
-                  media={postData.media}
-                  created_on={postData.created_on}
-                />
-                </div>
-              )
-            ))}
+          {postsData.length > 0 ? (
+            postsData
+              .filter(postData => postData.status === 'PUBLIC')
+              .map(postData => (
+                <div className='my-5' key={postData.id}>
+                  {postData.type === 'blog' && (
+                    <PostCard
+                      id={postData.id}
+                      title={postData.title}
+                      author={postData.author}
+                      description={postData.description}
+                      is_liked={postData.is_liked}
+                      likes_count={postData.likes_count}
+                      media={postData.media}
+                      created_on={postData.created_on}
+                    />
+                  )}
+                  {postData.type === 'poll' && (
+                    <PollCard 
+                      id={postData.id}
+                      author={postData.author}
+                      title={postData.title}
+                      opts={postData.choices}
+                      is_liked={postData.is_liked}
+                      likes_count={postData.likes_count}
+                      created_on={postData.created_on}
+                    />
+                  )}
+              </div>
+              ))
+          ) : (
+            <p className="text-gray-500 text-center">No posts available.</p>
+          )}
         </div>
       </div>
     </div>
