@@ -74,6 +74,7 @@ const SearchInput = () => {
   const clearInput = () => {
     setQuery("");
     inputRef.current.focus();
+    
   };
 
   return (

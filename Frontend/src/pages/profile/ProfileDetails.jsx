@@ -7,9 +7,10 @@ import profileAllianceData from '../../fetch/profileAllianceData';
 import profileFetch from '../../fetch/profile/profileFetch';
 import { useParams } from 'react-router-dom';
 import profilePostsFetch from '../../fetch/profile/profilePostsFetch';
+// import BlogCard from '../../components/cards/blog';
+// import PollCard from '../../components/cards/poll';
+import NovelCard from '../../components/cards/novel';
 import PostCard from '../../components/cards/post';
-import PollCard from '../../components/cards/poll';
-
 const ProfileDetails = () => {
   const [profile] = useContext(Context);
   const [allianceData, setAllianceData] = useState(null);
@@ -61,7 +62,7 @@ const ProfileDetails = () => {
           {profileData.bio && <p className="text-gray-600 mt-2">{profileData.bio}</p>}
         </div>
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-700">Profile Information</h2>
+          <h2 className="text-xl font-semibold text-gray-700 my-5">Profile Information</h2>
           <ul className="mt-4 space-y-2">
             {profileData.email && (
               <li className="flex justify-between">
@@ -84,7 +85,7 @@ const ProfileDetails = () => {
           </ul>
         </div>
         <div>
-          <h2 className="text-xl font-semibold text-gray-700">Alliance</h2>
+          <h2 className="text-xl font-semibold text-gray-700 my-5">Alliance</h2>
           <div className="mt-4 flex items-center">
             <img
               src={allianceData.icon || defaultAllianceIcon}
@@ -107,14 +108,29 @@ const ProfileDetails = () => {
             </div>
           </div>
         </div>
+        <div className='my-12'>
+          <h1 className='text-xl font-semibold text-gray-700 underline decoration-double my-5'>Novels</h1>
+          {postsData.filter(postData => postData.type==='novel').map(
+            (novel)=>(
+                <NovelCard 
+                key={novel.id}
+                media={novel.media}
+                title={novel.title}
+                />
+            )
+          )
+          
+}
+        </div>
+
         <div>
           {postsData.length > 0 ? (
             postsData
               .filter(postData => postData.status === 'PUBLIC')
               .map(postData => (
                 <div className='my-5' key={postData.id}>
-                  {postData.type === 'blog' && (
                     <PostCard
+                    
                       id={postData.id}
                       title={postData.title}
                       author={postData.author}
@@ -122,20 +138,11 @@ const ProfileDetails = () => {
                       is_liked={postData.is_liked}
                       likes_count={postData.likes_count}
                       media={postData.media}
-                      created_on={postData.created_on}
-                    />
-                  )}
-                  {postData.type === 'poll' && (
-                    <PollCard 
-                      id={postData.id}
-                      author={postData.author}
-                      title={postData.title}
                       opts={postData.choices}
-                      is_liked={postData.is_liked}
-                      likes_count={postData.likes_count}
                       created_on={postData.created_on}
+                      type={postData.type}
                     />
-                  )}
+
               </div>
               ))
           ) : (

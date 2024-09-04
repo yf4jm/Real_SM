@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import PostCard from '../../components/cards/post';
+import BlogCard from '../../components/cards/blog';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -123,7 +123,7 @@ const CommunityHome = () => {
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5 mt-5'>
           {blogData ? (
             blogData.map((postData) => (
-              <PostCard
+              <BlogCard
                 key={postData.id}
                 id={postData.id}
                 title={postData.title}
