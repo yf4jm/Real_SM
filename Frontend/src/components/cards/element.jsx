@@ -1,6 +1,6 @@
 import React from 'react'
 
-const NovelCard = ({media,title}) => {
+const ElementCard = ({media,title}) => {
   return (
     <>
     <div className='relative'>
@@ -13,4 +13,4 @@ const NovelCard = ({media,title}) => {
   )
 }
 
-export default NovelCard
+export default ElementCard

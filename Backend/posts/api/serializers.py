@@ -16,7 +16,7 @@ class NovelSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()
     class Meta:
         model = Novel
-        fields = ['id','author','created_on','updated_on','title','slug','status','likes_count','media','is_liked','type'   ]
+        fields = ['id','author','created_on','updated_on','title','slug','status','likes_count','media','is_liked','type','clicks_count']
     def get_is_liked(self, obj):
         profile_id = self.context.get('request').query_params.get('profile_id')
         if profile_id is not None:
@@ -36,7 +36,7 @@ class ComicSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()
     class Meta:
         model = Comic
-        fields = ['id', 'title', 'slug', 'status', 'author', 'media', 'likes_count','is_liked','type']
+        fields = ['id', 'title', 'slug', 'status', 'author', 'media', 'likes_count','is_liked','type','clicks_count','created_on','updated_on']
     def get_is_liked(self, obj):
         profile_id = self.context.get('request').query_params.get('profile_id')
         if profile_id is not None:
@@ -66,9 +66,10 @@ class PollSerializer(serializers.ModelSerializer):
     is_liked = serializers.SerializerMethodField()
     author = UserProfileSerializer()
     type = serializers.SerializerMethodField()
+    
     class Meta:
         model = Poll
-        fields = ['id','choices','created_on','updated_on','title','slug','status','likes_count','author','is_liked','type']
+        fields = ['id','choices','created_on','updated_on','title','slug','status','likes_count','author','is_liked','type','clicks_count']
     def get_is_liked(self, obj):
         profile_id = self.context.get('request').query_params.get('profile_id')
         if profile_id is not None:
@@ -91,7 +92,7 @@ class QuizSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()
     class Meta:
         model = Quiz
-        fields = ['id','choices','author','created_on','updated_on','title','slug','status','likes_count','is_liked','type']
+        fields = ['id','choices','author','created_on','updated_on','title','slug','status','likes_count','is_liked','type','clicks_count']
     def get_is_liked(self, obj):
         profile_id = self.context.get('request').query_params.get('profile_id')
         if profile_id is not None:
@@ -132,7 +133,7 @@ class BlogSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()
     class Meta:
         model = Blog
-        fields = ['id', 'title', 'description', 'status', 'author', 'media','created_on', 'is_liked', 'likes_count','type']
+        fields = ['id', 'title', 'description', 'status', 'author', 'media','created_on', 'is_liked', 'likes_count','type','clicks_count']
 
     def get_is_liked(self, obj):
         profile_id = self.context.get('request').query_params.get('profile_id')

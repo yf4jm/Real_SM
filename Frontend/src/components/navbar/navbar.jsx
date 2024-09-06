@@ -74,6 +74,7 @@ const Navbar = () => {
             <ul className='flex justify-between gap-5 items-center'>
                 <li>Home</li>
                 <li>Discover</li>
+                <li><Link to={"/create_post"}>+</Link></li>
                 <li className='relative flex items-center'>
                     {profile ? (
                         <>

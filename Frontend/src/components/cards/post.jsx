@@ -2,7 +2,7 @@ import React from 'react'
 import BlogCard from './blog'
 import QuizCard from './quiz'
 import PollCard from './poll'
-const PostCard = ({id,title,author,opts={},is_liked,likes_count,description="",media, created_on,type}) => {
+const PostCard = ({id,title,author,opts={},is_liked,likes_count,description="",media, created_on,type,clicks_count}) => {
     switch(type){
         case("blog"):
             return(
@@ -15,6 +15,7 @@ const PostCard = ({id,title,author,opts={},is_liked,likes_count,description="",m
                 likes_count={likes_count}
                 media={media}
                 created_on={created_on}
+                clicks_count={clicks_count}
               />
             )
         case("poll"):
@@ -27,6 +28,7 @@ const PostCard = ({id,title,author,opts={},is_liked,likes_count,description="",m
                     is_liked={is_liked}
                     likes_count={likes_count}
                     created_on={created_on}
+                    clicks_count={clicks_count}
                 />
             )
         case("quiz"):
@@ -39,6 +41,7 @@ const PostCard = ({id,title,author,opts={},is_liked,likes_count,description="",m
                     is_liked={is_liked}
                     likes_count={likes_count}
                     created_on={created_on}
+                    clicks_count={clicks_count}
                 />
             )
         

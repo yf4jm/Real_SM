@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 import profilePostsFetch from '../../fetch/profile/profilePostsFetch';
 // import BlogCard from '../../components/cards/blog';
 // import PollCard from '../../components/cards/poll';
-import NovelCard from '../../components/cards/novel';
+import ElementCard from '../../components/cards/element';
 import PostCard from '../../components/cards/post';
 const ProfileDetails = () => {
   const [profile] = useContext(Context);
@@ -112,15 +112,14 @@ const ProfileDetails = () => {
           <h1 className='text-xl font-semibold text-gray-700 underline decoration-double my-5'>Novels</h1>
           {postsData.filter(postData => postData.type==='novel').map(
             (novel)=>(
-                <NovelCard 
+                <ElementCard 
                 key={novel.id}
                 media={novel.media}
                 title={novel.title}
                 />
             )
           )
-          
-}
+          }
         </div>
 
         <div>
@@ -140,6 +139,7 @@ const ProfileDetails = () => {
                       media={postData.media}
                       opts={postData.choices}
                       created_on={postData.created_on}
+                      clicks_count ={postData.clicks_count}
                       type={postData.type}
                     />
 

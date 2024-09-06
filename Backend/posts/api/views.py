@@ -49,18 +49,21 @@ class UserPostsView(APIView):
         quizzes = Quiz.objects.filter(author_id=profile_id)
         blogs = Blog.objects.filter(author_id=profile_id)
         novels = Novel.objects.filter(author_id=profile_id)
+        comics = Comic.objects.filter(author_id=profile_id)
 
         # Serialize the data with request context
         poll_serializer = PollSerializer(polls, many=True, context={'request': request})
         quiz_serializer = QuizSerializer(quizzes, many=True, context={'request': request})
         blog_serializer = BlogSerializer(blogs, many=True, context={'request': request})
         novel_serializer = NovelSerializer(novels, many=True, context={'request': request})
+        comic_serializer = ComicSerializer(comics, many=True, context={'request': request})
         # Combine and sort by created_on field
         all_posts = list(chain(
             poll_serializer.data,
             quiz_serializer.data,
             blog_serializer.data,
             novel_serializer.data,
+            comic_serializer.data,
         ))
         all_posts_sorted = sorted(all_posts, key=lambda x: x['created_on'], reverse=True)
 

@@ -7,8 +7,8 @@ import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import no_img from '../../assets/no_img.png';
 import toggleLike from '../../posts/like_post';
-
-const BlogCard = ({ id, title, author, description, is_liked, likes_count, media, created_on }) => {
+import getFormattedDate from '../../utils/getFormattedDate';
+const BlogCard = ({ id, title, author, description, is_liked, likes_count, media, created_on,clicks_count }) => {
   const [liked, setLiked] = useState(is_liked);
   const [likeCount, setLikeCount] = useState(likes_count);
 
@@ -31,34 +31,6 @@ const BlogCard = ({ id, title, author, description, is_liked, likes_count, media
     }
   };
 
-  const getFormattedDate = (created_on) => {
-    const postDate = new Date(created_on);
-    const now = new Date();
-    const timeDiff = now - postDate;
-    const seconds = Math.floor(timeDiff / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-
-    if (hours < 24) {
-      if (hours >= 1) {
-        return `${hours}h ago`;
-      } else if (minutes >= 1) {
-        return `${minutes}m ago`;
-      } else {
-        return `${seconds}s ago`;
-      }
-    } else {
-      return postDate.toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true,
-      });
-    }
-  };
 
   const formattedDate = getFormattedDate(created_on);
 
@@ -79,6 +51,9 @@ const BlogCard = ({ id, title, author, description, is_liked, likes_count, media
           <h2 className='text-lg font-bold text-gray-800'>{author.name}</h2>
           <p className='text-sm text-gray-500'>{formattedDate}</p>
         </div>
+      </div>
+      <div className='text-gray-400'>
+          <span>{clicks_count} clicks</span>
       </div>
       <div className='flex justify-between items-center my-5'>
         <div onClick={handleToggleLike} className='cursor-pointer flex items-center'>

@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import (Novel, NovelChapter, Comic, ComicChapter, ComicImage,Poll, PollChoice, Quiz, QuizChoice, Blog, Keyword)
+from .models import (Novel, NovelChapter, Comic, ComicChapter, ComicImage,Poll, PollChoice, Quiz, QuizChoice, Blog)
 from .bookmark import PostBookmark
-
+from .basepost import Click
 from .forms import ComicImageForm
 
 class NovelChapterInline(admin.TabularInline):
@@ -76,4 +76,5 @@ class BlogAdmin(admin.ModelAdmin):
 
 admin.site.register(ComicImage)
 admin.site.register(PostBookmark)
+admin.site.register(Click)
 
