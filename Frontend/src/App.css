@@ -1,0 +1,36 @@
+/* Import Google Fonts */
+
+ /* Railway */ @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+/* Playfair Display */ @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+ /* SUSE */ @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=SUSE:wght@100..800&display=swap');
+/* Quill Custom Font Picker Styles */
+.ql-picker.ql-font {
+  .ql-picker-item {
+    font-size: 0;
+    &:before {
+      content: attr(data-value) !important;
+      font-size: 14px;
+    }
+  }
+}
+
+.ql-picker.ql-font .ql-active {
+  &:before {
+    content: attr(data-value) !important;
+    font-size: 14px;
+  }
+}
+
+.ql-font-Roboto{
+  font-family: "Roboto", serif;
+}
+.ql-font-Raleway{
+  font-family: "Raleway";
+}
+.ql-font-Playfair_Display{
+  font-family: "Playfair Display";
+}
+.ql-font-SUSE{
+  font-family: "SUSE";
+}
+

@@ -18,6 +18,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.db.models import Prefetch
+from real.metadata import CustomMetadata
 class LikeToggleView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -42,7 +43,14 @@ class LikeToggleView(APIView):
         return Response({'liked': liked, 'likes_count': post.likes.count()}, status=status.HTTP_200_OK)
 # @method_decorator(cache_page(60 * 15), name='dispatch')
 class UserPostsView(APIView):
+    metadata_class = CustomMetadata
+    
     def get(self, request, profile_id):
+        # Pass profile_id to metadata class
+        meta = self.metadata_class(profile_id=profile_id)
+        data = meta.determine_metadata(request, self)
+
+        data['description'] = 'Custom Header Value'
         
         # Fetch all posts created by the user
         polls = Poll.objects.filter(author_id=profile_id)
@@ -57,6 +65,7 @@ class UserPostsView(APIView):
         blog_serializer = BlogSerializer(blogs, many=True, context={'request': request})
         novel_serializer = NovelSerializer(novels, many=True, context={'request': request})
         comic_serializer = ComicSerializer(comics, many=True, context={'request': request})
+
         # Combine and sort by created_on field
         all_posts = list(chain(
             poll_serializer.data,
@@ -68,6 +77,7 @@ class UserPostsView(APIView):
         all_posts_sorted = sorted(all_posts, key=lambda x: x['created_on'], reverse=True)
 
         return Response(all_posts_sorted, status=status.HTTP_200_OK)
+
 
 
 
