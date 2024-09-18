@@ -12,6 +12,8 @@ from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.db.models import Q
 from django.contrib.postgres.search import TrigramSimilarity
 
+
+
 spell = Speller(lang='en', fast=True)
 
 
@@ -41,15 +43,19 @@ class SearchSuggestionView(generics.ListAPIView):
         if query:
             results = SearchHistory.objects.annotate(
                 similarity=TrigramSimilarity('search_query', spell(query))
-            ).filter(similarity__gt=0.1).order_by('-similarity', '-search_query_count')[:5]
+            ).filter(similarity__gt=0.4).order_by('-similarity', '-search_query_count')[:5]
             return results
         return SearchHistory.objects.none()
 
-class KeywordListCreateView(generics.ListCreateAPIView):
-    queryset = Keyword.objects.all()
+class SearchKeywordView(generics.ListAPIView):
     serializer_class = KeywordSerializer
+    def get_queryset(self):
+        query = self.request.query_params.get('q', None)
+        if query:
+            results = Keyword.objects.annotate(
+                similarity=TrigramSimilarity('keyword_name', spell(query))
+            ).filter(similarity__gt=0.1).order_by('-similarity', '-keyword_search_count')[:5]
+            return results
+        return Keyword.objects.none()
 
-class KeywordDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Keyword.objects.all()
-    serializer_class = KeywordSerializer
 

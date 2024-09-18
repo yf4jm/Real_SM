@@ -9,11 +9,16 @@ from .views import (
     PollChoiceListCreateView, PollChoiceDetailView,
     QuizListCreateView, QuizDetailView,
     QuizChoiceListCreateView, QuizChoiceDetailView,
-    BlogListCreateView, BlogDetailView,LikeToggleView,UserPostsView
+    BlogListCreateView, BlogDetailView,LikeToggleView,UserPostsView,
+    KeywordCreateView,KeywordDetailView
 )
 from django.views.decorators.cache import cache_page
 
+
 urlpatterns = [
+    path('keywords/',KeywordCreateView.as_view(),name='keyword-create'),
+    path('keywords/<int:pk>',KeywordDetailView.as_view(),name='keyword-detail'),
+
     path('profile/<uuid:profile_id>/posts/', UserPostsView.as_view(), name='user-posts'),
 
 

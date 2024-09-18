@@ -4,7 +4,7 @@ from search.models import Keyword, SearchHistory
 class KeywordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Keyword
-        fields = '__all__'
+        fields = ['keyword_name']
 
 class SearchHistorySerializer(serializers.ModelSerializer):
     class Meta:

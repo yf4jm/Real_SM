@@ -5,7 +5,7 @@ import { Context } from '../../App';
 import { fetchProfile } from '../../fetch/navProfileData';
 import SearchInput from '../inputs/search';
 import Api from '../../AxiosInstance';
-
+import AddIcon from '@mui/icons-material/Add';
 const Navbar = () => {
     const [profile, setProfile] = useContext(Context);
     const [loading, setLoading] = useState(true);
@@ -74,7 +74,7 @@ const Navbar = () => {
             <ul className='flex justify-between gap-5 items-center'>
                 <li>Home</li>
                 <li>Discover</li>
-                <li><Link to={"/create_post"}>+</Link></li>
+                <li><Link to={"/create_post"}><AddIcon className='border-solid border-slate-200 border-2 rounded-lg'/></Link></li>
                 <li className='relative flex items-center'>
                     {profile ? (
                         <>

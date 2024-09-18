@@ -13,12 +13,26 @@ from rest_framework import generics
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
-from .serializers import NovelSerializer, NovelChapterSerializer, ComicSerializer, ComicChapterSerializer, ComicImageSerializer, PollSerializer, PollChoiceSerializer, QuizSerializer, QuizChoiceSerializer, BlogSerializer
+from .serializers import NovelSerializer,KeywordSerializer, NovelChapterSerializer, ComicSerializer, ComicChapterSerializer, ComicImageSerializer, PollSerializer, PollChoiceSerializer, QuizSerializer, QuizChoiceSerializer, BlogSerializer
 from django.contrib.contenttypes.models import ContentType
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.db.models import Prefetch
 from real.metadata import CustomMetadata
+
+
+class KeywordCreateView(generics.ListCreateAPIView):
+    queryset = Keyword.objects.all()
+    serializer_class = KeywordSerializer
+
+class KeywordDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Keyword.objects.all()
+    serializer_class = KeywordSerializer
+
+
+
+
+
 class LikeToggleView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -65,7 +79,7 @@ class UserPostsView(APIView):
         blog_serializer = BlogSerializer(blogs, many=True, context={'request': request})
         novel_serializer = NovelSerializer(novels, many=True, context={'request': request})
         comic_serializer = ComicSerializer(comics, many=True, context={'request': request})
-
+        
         # Combine and sort by created_on field
         all_posts = list(chain(
             poll_serializer.data,

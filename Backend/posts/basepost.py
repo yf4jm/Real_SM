@@ -40,9 +40,9 @@ class Post(TimeStamp):
     slug = models.SlugField(default="", null=True, unique=True, blank=True, db_index=True)
     status = models.CharField(max_length=7, choices=Status.choices, default=Status.PUBLIC, db_index=True)
     likes = models.ManyToManyField(Profile, blank=True,related_name="+")
-    likes_count = models.PositiveIntegerField(default=0)
+    likes_count = models.PositiveIntegerField(default=0,blank=True)
     keywords = models.ManyToManyField(Keyword, blank=True)
-    keywords_score = models.JSONField(null=True)
+    keywords_score = models.JSONField(null=True,blank=True)
     clicks_count = models.PositiveIntegerField(default=0,blank=True)
     objects = PostManager()
     

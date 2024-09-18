@@ -7,7 +7,11 @@ from posts.models import (
 from users.api.serializers import UserProfileSerializer
 from django_quill.fields import FieldQuill
 import json
-
+from users.models import Profile
+class KeywordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Keyword
+        fields = '__all__'
 
 
 class NovelSerializer(serializers.ModelSerializer):
@@ -108,32 +112,45 @@ class QuizSerializer(serializers.ModelSerializer):
 class QuillFieldDetailsSerializer(serializers.Field):
     def to_representation(self, value):
         return {
-            'raw':value.delta,
+            'delta':value.delta,
             'html': value.html,
-            'plain': value.plain,
         }
 
     def to_internal_value(self, data):
-        pass
+        print
+        if not isinstance(data, dict) or 'html' not in data or 'delta' not in data:
+            raise serializers.ValidationError('wrong format')
+        
+        return { 
+            'html': data['html'],
+            'delta':data['delta'],     # The rich HTML content
+        }
 
 
 class QuillFieldSerializer(serializers.Field):
     def to_representation(self, value):
         return {
-            'plain': value.plain,
+            'plain': value.plain
         }
 
     def to_internal_value(self, data):
-        pass
+        print(f"Incoming data: {data}")
+        if not isinstance(data, dict) or 'plain' not in data:
+            raise serializers.ValidationError('Invalid format for description')
+        
+        return data['plain']
 
 class BlogSerializer(serializers.ModelSerializer):
-    description = QuillFieldSerializer()
+    description = QuillFieldDetailsSerializer()
     is_liked = serializers.SerializerMethodField()
-    author = UserProfileSerializer()
+    author = UserProfileSerializer(read_only=True)
+    author_id = serializers.PrimaryKeyRelatedField(
+        queryset=Profile.objects.all(), write_only=True, source='author'
+    )
     type = serializers.SerializerMethodField()
     class Meta:
         model = Blog
-        fields = ['id', 'title', 'description', 'status', 'author', 'media','created_on', 'is_liked', 'likes_count','type','clicks_count']
+        fields = ['id', 'title', 'description', 'status', 'author','author_id', 'media','created_on', 'is_liked', 'likes_count','type','clicks_count']
 
     def get_is_liked(self, obj):
         profile_id = self.context.get('request').query_params.get('profile_id')

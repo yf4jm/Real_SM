@@ -1,14 +1,10 @@
 from django.contrib import admin
 from django.urls import path,include
-from .views import (KeywordListCreateView,KeywordDetailView,
-                    SearchSuggestionView
+from .views import (
+                    SearchSuggestionView,SearchKeywordView
 )
 urlpatterns =[
-# path("keywords/",KeywordListCreateView.as_view(),name="keyword-list-create"),
-# path("keywords/<int:pk>",KeywordDetailView.as_view(),name="keyword-detail"),
-
-# path("search-keywords/",SearchKeywordListCreateView.as_view(),name="search-keywords-list-create"),
-# path("search-keywords/<int:pk>",SearchKeywordDetailView.as_view(),name="search-keywords-detail"),
+path("search-keywords/",SearchKeywordView.as_view(),name="search-keywords-list-create"),
 
 # path("searchs/",SearchListCreateView.as_view(),name="searchs-list-create"),
 # path("searchs/<int:pk>",SearchDetailView.as_view(),name="searchs-list-detail"),
