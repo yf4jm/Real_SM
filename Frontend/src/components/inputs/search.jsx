@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-
+import { useNavigate } from "react-router";
 const SearchInput = () => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [focusedSuggestionIndex, setFocusedSuggestionIndex] = useState(0);
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (query.length > 0) {
       const fetchSuggestions = async () => {
@@ -60,6 +60,8 @@ const SearchInput = () => {
   const handleSuggestionClick = (suggestion) => {
     setQuery(suggestion);
     console.log("Search specified: ", suggestion);
+    navigate(`/search?q=${query}`)
+    
   };
 
   const handleInputFocus = () => {

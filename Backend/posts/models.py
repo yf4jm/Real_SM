@@ -5,7 +5,6 @@ from .basepost import Post
 from .timestamp import TimeStamp
 from django.utils.text import slugify
 import uuid
-from django_quill.fields import QuillField
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from search.models import Keyword
@@ -87,7 +86,7 @@ class QuizChoice(models.Model):
 class Blog(Post):
     media = models.ImageField(upload_to='blog_cover/',null=True,blank=True)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='blogs', db_index=True)
-    description = QuillField()
+    description = models.JSONField(null=True)
     def __str__(self):
         return self.title
 #/////////////////////////////////////////////

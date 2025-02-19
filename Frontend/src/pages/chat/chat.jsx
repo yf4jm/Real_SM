@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Api from "../../AxiosInstance";
 import createWebSocket from "./websocket";
-
+import getFormattedDate from "../../utils/getFormattedDate";
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [profile, setProfile] = useState(null);
@@ -24,7 +24,7 @@ const Chat = () => {
         setError("Failed to fetch messages");
       }
     };
-
+    console.log(messages)
     fetchMessages();
   }, [roomId]);
 
@@ -84,8 +84,8 @@ const Chat = () => {
             {error && <div className="text-red-500">{error}</div>}
             {messages.map((message, index) => (
               message.profile && ( // Check if profile exists
-                <div key={index} className={`p-2 mb-2 rounded-lg`}>
-                  <div className="flex items-center">
+                <div key={index} className={`p-2 mb-2 rounded-lg `}>
+                  <div className={`flex items-center  ${message.profile.id === profile?.id && "justify-end bg-sky-200"}`}>
                     <img
                       src={message.profile.icon}
                       alt="Profile Icon"
@@ -95,18 +95,19 @@ const Chat = () => {
                       href={`/profile/${message.profile.id}`}
                       className="font-bold"
                     >
-                      {message.profile.name}
+                      {message.profile.name} 
                     </a>
+                    <span className="ml-5 text-gray-500">{getFormattedDate(message.created_on)}</span>
+
                   </div>
-                  <div>{message.message}</div>
+                  <div className={`${message.profile.id === profile?.id && "text-end bg-sky-200"}`}>{message.message}</div>
                 </div>
               )
             ))}
           </div>
         </div>
       </div>
-
-      <div className="bg-white border-t border-gray-300 p-4">
+      <div className="bg-white border-t border-gray-300 p-4 sticky bottom-0 w-full">
         <div className="flex">
           <input
             id="chat-message-input"

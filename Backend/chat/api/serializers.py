@@ -11,4 +11,4 @@ class ChatMessageSerializer(serializers.ModelSerializer):
     profile = UserProfileSerializer()
     class Meta:
         model = ChatMessage
-        fields = ['profile', 'message', 'timestamp']
+        fields = ['profile', 'message', 'created_on']

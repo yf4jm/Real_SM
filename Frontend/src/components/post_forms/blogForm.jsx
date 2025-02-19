@@ -1,15 +1,21 @@
 import React, { useState, useRef } from 'react';
 import ReactQuill from 'react-quill-new';
-import 'react-quill-new/dist/quill.bubble.css';
+import 'react-quill-new/dist/quill.snow.css';
 import '../../App.css'; // Ensure fonts are declared in your custom CSS
 import CreatableSelect from 'react-select/creatable';
+import Select from 'react-select';
 import axios from 'axios'; // You can use axios or fetch for API calls
-
+import ImageResize from 'quill-image-resize-module-react';
+import { ImageActions } from '@xeger/quill-image-actions';
+import { ImageFormats } from '@xeger/quill-image-formats';
 // Register fancy fonts globally
 const Quill = ReactQuill.Quill;
 const Font = Quill.import("formats/font");
 Font.whitelist = ["Roboto", "Raleway", "SUSE", "Montserrat", "Lato", "Rubik", "Playfair_Display", "Merriweather", "Libre Baskerville", "Zilla Slab"];
 Quill.register(Font, true);
+Quill.register('modules/imageResize', ImageResize);
+Quill.register('modules/imageActions', ImageActions);
+Quill.register('modules/imageFormats', ImageFormats);
 
 const BlogForm = () => {
   const [description, setDescription] = useState('');
@@ -59,7 +65,20 @@ const BlogForm = () => {
       fetchKeywords(inputValue);
     }
   };
-
+  const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+  ]
+  
+  const handlePost =()=>{
+    const editor = quillRef.current.getEditor();
+    const plainText = editor.getText();
+    console.log(editor);
+    
+    alert("clicked");
+    
+  }
   return (
     <>
       <p>Create Blog</p>
@@ -73,19 +92,29 @@ const BlogForm = () => {
         />
         <label htmlFor="description">Description: </label>
         <ReactQuill
-          theme='bubble'
+          theme='snow'
           ref={quillRef}
           value={description}
           onChange={setDescription}
           modules={{
+            imageActions :{},
+            // fix this
+            // imageFormats :{},
             toolbar: toolbarOptions,
+            imageResize: {
+              parchment: Quill.import('parchment'),
+              modules: ['Resize', 'DisplaySize']
+           }
           }}
           className='w-1/2 h-auto border-solid border-2 border-slate-400'
         />
         <span>Alliance:</span>
-        <select name="" id="" className='w-1/2'>
-          <option value="">Select an option</option>
-        </select>
+        <Select
+            name="Alliance"
+            options={options} 
+            onInputChange={handleKeywordInputChange}
+            className="w-1/2"
+        />
         <span>Status:</span>
         <select name="" id="" className='w-1/2'>
           <option value="PUBLIC">Public</option>
@@ -113,7 +142,7 @@ const BlogForm = () => {
         />
         <span>Cover:</span>
         <div className="flex flex-col items-center justify-center w-1/2">
-          <label
+          <label                      
             htmlFor="dropzone-file"
             className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
           >
@@ -149,6 +178,12 @@ const BlogForm = () => {
             />
           </label>
         </div>
+        <button 
+        className='bg-sky-300 w-1/2 py-2 rounded-lg'
+        onClick={handlePost}
+        >Submit</button>
+
+
       </div>
 
       {/* Preview the description */}

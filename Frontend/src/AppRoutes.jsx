@@ -10,9 +10,11 @@ import Page_404 from './pages/error/404_page';
 import ProfileDetails from './pages/profile/ProfileDetails';
 import HorizentalImages from './components/containers/horizentalImages';
 import PostCreate from './pages/post_create/post_create';
+import SearchPage from './pages/search/searchPage';
 const AppRoutes = () => {
   return (
     <Routes>
+      <Route path='/search' element={<SearchPage />} />
       <Route path='/error/404' element={<Page_404 />} />
       <Route path="/community/:pk" element={<Community />} />
       <Route path="/c/:pk" element={<CommunityHome />} />

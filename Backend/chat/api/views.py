@@ -26,7 +26,7 @@ class ChatMessageListView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         room_id = self.kwargs['room_id']
-        return ChatMessage.objects.filter(room_id=room_id).order_by('timestamp')
+        return ChatMessage.objects.filter(room_id=room_id).order_by('created_on')
     
     def perform_create(self, serializer):
         room_id = self.kwargs['room_id']

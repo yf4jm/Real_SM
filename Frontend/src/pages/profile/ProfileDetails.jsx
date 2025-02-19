@@ -46,7 +46,7 @@ const ProfileDetails = () => {
   return (
     <div
       className="min-h-screen flex justify-center items-center bg-repeat"
-      style={{ backgroundImage: `url(${bg})` }}
+      // style={{ backgroundImage: `url(${bg})` }}
     >
       <div className="max-w-2xl w-full p-6 bg-white shadow-lg rounded-lg">
         <div className="flex justify-center mb-6">

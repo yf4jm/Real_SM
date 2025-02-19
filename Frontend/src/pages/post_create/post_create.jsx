@@ -10,20 +10,23 @@ const PostCreate = () => {
 
     return (
         <>
-            <ul className='flex gap-5'>
-                <li onClick={() => setPostType("blog")}>blog</li>
-                <li onClick={() => setPostType("poll")}>poll</li>
-                <li onClick={() => setPostType("quiz")}>quiz</li>
-                <li onClick={() => setPostType("comic")}>comic</li>
-                <li onClick={() => setPostType("novel")}>novel</li>
-            </ul>
-
-            {/* Conditional rendering based on postType */}
-            {postType === "blog" && <BlogForm />}
-            {postType === "poll" && <PollForm />}
-            {postType === "quiz" && <QuizForm />}
-            {postType === "comic" && <ComicForm />}
-            {postType === "novel" && <NovelForm />}
+            <div className='flex justify-center gap-20'>
+                <ul className='flex gap-3 flex-col'>
+                    <li  className='w-48 bg-green-500 rounded-xl p-3' onClick={() => setPostType("blog")}>blog</li>
+                    <li className='w-48 bg-green-500 rounded-xl p-3' onClick={() => setPostType("poll")}>poll</li>
+                    <li className='w-48 bg-green-500 rounded-xl p-3' onClick={() => setPostType("quiz")}>quiz</li>
+                    <li className='w-48 bg-green-500 rounded-xl p-3' onClick={() => setPostType("comic")}>comic</li>
+                    <li className='w-48 bg-green-500 rounded-xl p-3'onClick={() => setPostType("novel")}>novel</li>
+                </ul>
+                <div className='bg-gray-200'>
+                    {/* Conditional rendering based on postType */}
+                    {postType === "blog" && <BlogForm />}
+                    {postType === "poll" && <PollForm />}
+                    {postType === "quiz" && <QuizForm />}
+                    {postType === "comic" && <ComicForm />}
+                    {postType === "novel" && <NovelForm />}
+                </div>
+            </div>
         </>
     );
 };

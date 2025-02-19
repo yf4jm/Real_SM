@@ -5,7 +5,6 @@ from posts.models import (
     Poll,PollChoice,Quiz,QuizChoice,Blog
 )
 from users.api.serializers import UserProfileSerializer
-from django_quill.fields import FieldQuill
 import json
 from users.models import Profile
 class KeywordSerializer(serializers.ModelSerializer):
@@ -112,12 +111,11 @@ class QuizSerializer(serializers.ModelSerializer):
 class QuillFieldDetailsSerializer(serializers.Field):
     def to_representation(self, value):
         return {
-            'delta':value.delta,
+            'raw':value.delta,
             'html': value.html,
         }
 
     def to_internal_value(self, data):
-        print
         if not isinstance(data, dict) or 'html' not in data or 'delta' not in data:
             raise serializers.ValidationError('wrong format')
         
@@ -127,21 +125,18 @@ class QuillFieldDetailsSerializer(serializers.Field):
         }
 
 
-class QuillFieldSerializer(serializers.Field):
-    def to_representation(self, value):
-        return {
-            'plain': value.plain
-        }
+# class QuillFieldSerializer(serializers.Field):
+#     def to_representation(self, value):
+#         return {
+#             'plain': value.plain if hasattr(value, 'plain') else '',
+#             'html': value.html if hasattr(value, 'html') else '',
+#         }
 
-    def to_internal_value(self, data):
-        print(f"Incoming data: {data}")
-        if not isinstance(data, dict) or 'plain' not in data:
-            raise serializers.ValidationError('Invalid format for description')
-        
-        return data['plain']
+#     def to_internal_value(self, data):
+#        pass
 
 class BlogSerializer(serializers.ModelSerializer):
-    description = QuillFieldDetailsSerializer()
+    description = serializers.JSONField()
     is_liked = serializers.SerializerMethodField()
     author = UserProfileSerializer(read_only=True)
     author_id = serializers.PrimaryKeyRelatedField(

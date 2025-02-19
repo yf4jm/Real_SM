@@ -16,17 +16,17 @@ def stem(word):
     return ps.stem(word)
 
 # Generate a large list of posts with random keywords and scores
-# def generate_random_posts(num_posts, num_keywords):
-#     keywords = [f"keyword{i}" for i in range(num_keywords)]
-#     posts = []
-#     for _ in range(num_posts):
-#         post = {stem(random.choice(keywords)): random.randint(1, 1000) for _ in range(random.randint(1, 5))}
-#         posts.append([post])  # Wrap in a list to match the original format
-#     return posts
+def generate_random_posts(num_posts, num_keywords):
+    keywords = [f"keyword{i}" for i in range(num_keywords)]
+    posts = []
+    for _ in range(num_posts):
+        post = {stem(random.choice(keywords)): random.randint(1, 1000) for _ in range(random.randint(1, 5))}
+        posts.append([post])  # Wrap in a list to match the original format
+    return posts
 
-# # Generate 100 posts with up to 20 unique keywords
-# posts = generate_random_posts(num_posts=100, num_keywords=20)
-posts =[]
+# Generate 100 posts with up to 20 unique keywords
+posts = generate_random_posts(num_posts=100, num_keywords=20)
+# posts =[]
 def algo(q):
     # Step 1: Spell check and tokenize the input
     corrected_sentence = spell(q)
