@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
+
 const SearchInput = () => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -7,6 +8,7 @@ const SearchInput = () => {
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef(null);
   const navigate = useNavigate();
+
   useEffect(() => {
     if (query.length > 0) {
       const fetchSuggestions = async () => {
@@ -26,6 +28,7 @@ const SearchInput = () => {
   }, [query]);
 
   const handleInputChange = (e) => {
+    handleInputFocus();
     setQuery(e.target.value);
     setFocusedSuggestionIndex(0); // Reset to first suggestion
   };
@@ -34,9 +37,8 @@ const SearchInput = () => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
       setFocusedSuggestionIndex((prevIndex) =>
-        Math.min(prevIndex + 1, suggestions.length - 1)
+        Math.min(prevIndex + 1, suggestions.length)
       );
-
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       setFocusedSuggestionIndex((prevIndex) =>
@@ -44,24 +46,31 @@ const SearchInput = () => {
       );
     } else if (e.key === "Tab") {
       e.preventDefault();
-      if (suggestions.length > 0) {
-        setQuery(suggestions[focusedSuggestionIndex]);
-        setIsFocused(true);
+      if (focusedSuggestionIndex === 0) {
+        setQuery(query); // Don't change the query
+      } else if (suggestions.length > 0) {
+        setQuery(suggestions[focusedSuggestionIndex - 1]); // Select the focused suggestion
       }
+      setFocusedSuggestionIndex(0);
+      setIsFocused(true);
     }
     if (e.key === "Escape") {
       inputRef.current.blur(); 
     }
     if (e.key === "Enter") {
-      console.log("You searched for ", suggestions[focusedSuggestionIndex]);
+      const searchQuery = focusedSuggestionIndex === 0 ? query : suggestions[focusedSuggestionIndex - 1];
+      setQuery(searchQuery);
+      setFocusedSuggestionIndex(0);
+      handleInputBlur();
+      console.log("You searched for ", searchQuery);
+      navigate(`/search?q=${searchQuery}`);
     }
   };
 
   const handleSuggestionClick = (suggestion) => {
     setQuery(suggestion);
     console.log("Search specified: ", suggestion);
-    navigate(`/search?q=${query}`)
-    
+    navigate(`/search?q=${suggestion}`);
   };
 
   const handleInputFocus = () => {
@@ -69,14 +78,12 @@ const SearchInput = () => {
   };
 
   const handleInputBlur = () => {
-    // Delay blur to allow click to register on suggestions
     setTimeout(() => setIsFocused(false), 100);
   };
 
   const clearInput = () => {
     setQuery("");
     inputRef.current.focus();
-    
   };
 
   return (
@@ -105,22 +112,31 @@ const SearchInput = () => {
         </button>
       )}
 
-      {isFocused && suggestions.length > 0 && (
+      {isFocused && (suggestions.length > 0) && (
         <div className="absolute w-full mt-2 bg-white rounded-lg shadow-lg p-4 flex">
           <ul
             id="suggestions-list"
             className="w-2/3 mr-2"
             role="listbox"
           >
+            <li
+              id="suggestion-query"
+              key="query"
+              className={`p-2 cursor-pointer text-black hover:bg-gray-100 ${focusedSuggestionIndex === 0 ? "bg-gray-100" : ""}`}
+              onMouseDown={() => handleSuggestionClick(query)}
+              aria-selected={focusedSuggestionIndex === 0}
+              role="option"
+            >
+              "{query}"
+            </li>
+            
             {suggestions.map((suggestion, index) => (
               <li
                 id={`suggestion-${index}`}
                 key={index}
-                className={`p-2 cursor-pointer text-black hover:bg-gray-100 ${
-                  index === focusedSuggestionIndex ? "bg-gray-100" : ""
-                }`}
+                className={`p-2 cursor-pointer text-black hover:bg-gray-100 ${index + 1 === focusedSuggestionIndex ? "bg-gray-100" : ""}`}
                 onMouseDown={() => handleSuggestionClick(suggestion)}
-                aria-selected={index === focusedSuggestionIndex}
+                aria-selected={index + 1 === focusedSuggestionIndex}
                 role="option"
               >
                 {suggestion}
@@ -130,19 +146,10 @@ const SearchInput = () => {
 
           <ul className="w-1/3 bg-gray-100 p-2 rounded-lg">
             <li className="text-black text-center font-semibold">Popular Keywords</li>
-            {/* Add your popular keywords here */}
-            <li className="p-2 cursor-pointer hover:bg-gray-200 text-black">
-              Example Keyword
-            </li>
-            <li className="p-2 cursor-pointer hover:bg-gray-200 text-black">
-              Example Keyword
-            </li>
-            <li className="p-2 cursor-pointer hover:bg-gray-200 text-black">
-              Example Keyword
-            </li>
-            <li className="p-2 cursor-pointer hover:bg-gray-200 text-black">
-              Example Keyword
-            </li>
+            <li className="p-2 cursor-pointer hover:bg-gray-200 text-black">Example Keyword</li>
+            <li className="p-2 cursor-pointer hover:bg-gray-200 text-black">Example Keyword</li>
+            <li className="p-2 cursor-pointer hover:bg-gray-200 text-black">Example Keyword</li>
+            <li className="p-2 cursor-pointer hover:bg-gray-200 text-black">Example Keyword</li>
           </ul>
         </div>
       )}
