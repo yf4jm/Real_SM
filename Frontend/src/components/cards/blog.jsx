@@ -36,7 +36,7 @@ const BlogCard = ({ id, title, author, description, is_liked, likes_count, media
 
   return (
     <div className='flex flex-col justify-between bg-white w-full p-6 rounded-lg shadow-lg' style={{ maxHeight: '750px' }}>
-      <Link to={`posts/${id}`} className='block'>
+      <Link to={`/post/blog/${id}`} className='block'>
         <div className='max-h-96 min-h-40 w-full rounded-lg overflow-hidden'>
           <img src={media || no_img} alt="Post image" className='h-full w-full object-cover' />
         </div>

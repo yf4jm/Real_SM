@@ -11,6 +11,7 @@ import ProfileDetails from './pages/profile/ProfileDetails';
 import HorizentalImages from './components/containers/horizentalImages';
 import PostCreate from './pages/post_create/post_create';
 import SearchPage from './pages/search/searchPage';
+import PostRoutes from './PostRoutes';
 const AppRoutes = () => {
   return (
     <Routes>
@@ -24,6 +25,9 @@ const AppRoutes = () => {
       <Route path='/profile/:pk' element={<ProfileDetails />} />
       <Route path='/test/' element={<HorizentalImages />} />
       <Route path='/create_post/' element={<PostCreate />} />
+
+      
+      <Route path="post/*" element={<PostRoutes />} />
     </Routes>
   );
 };
