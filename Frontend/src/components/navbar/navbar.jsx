@@ -72,8 +72,9 @@ const Navbar = () => {
             <SearchInput className="" />
             </div>
             <ul className='flex justify-between gap-5 items-center'>
-                <li>Home</li>
-                <li>Discover</li>
+                <li><Link to={"/"}>Home</Link></li>
+                <li><Link to={"/discover"}>Discover</Link></li>
+                <li><Link to={"/leaderboards/alliance"}>Leaderboards</Link></li>
                 <li><Link to={"/create_post"}><AddIcon className='border-solid border-slate-200 border-2 rounded-lg'/></Link></li>
                 <li className='relative flex items-center'>
                     {profile ? (
