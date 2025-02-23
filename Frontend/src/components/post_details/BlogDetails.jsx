@@ -39,7 +39,7 @@ const BlogDetails = () => {
   if (!blog) return <div>Loading blog details...</div>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <div className="max-w-3xl mx-auto p-6  rounded-lg">
       {/* Blog Cover Image */}
       {blog.media && <img src={blog.media} alt={blog.title} className="w-full h-64 object-cover rounded-lg" />}
 
@@ -83,7 +83,7 @@ const BlogDetails = () => {
             />
             <button
                 type="submit"
-                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                className="mt-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-600"
             >
                 Post Comment
             </button>
@@ -92,10 +92,10 @@ const BlogDetails = () => {
             {/* Comments List */}
             <div className="space-y-4">
             {comments.length === 0 ? (
-                <p className="text-gray-500">No comments yet. Be the first to comment!</p>
+                <p className="">No comments yet. Be the first to comment!</p>
             ) : (
                 comments.map((comment) => (
-                <div key={comment.id} className="p-4 bg-gray-100 rounded-lg">
+                <div key={comment.id} className="p-4 rounded-lg">
                     <p className="font-medium">{comment.author}</p>
                     <p>{comment.text}</p>
                 </div>

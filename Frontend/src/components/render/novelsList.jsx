@@ -3,7 +3,7 @@ import ElementCard from '../cards/element'
 const NovelsList = ({postsData}) => {
   return (
     <div className='my-12'>
-    <h1 className='text-xl font-semibold text-gray-700 underline decoration-double my-5'>Novels</h1>
+    <h1 className='text-xl font-semibold underline decoration-double my-5'>Novels</h1>
     {postsData.filter(postData => postData.type === 'novel').map(
       (novel) => (
         <ElementCard

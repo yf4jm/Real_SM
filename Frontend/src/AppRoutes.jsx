@@ -13,6 +13,7 @@ import PostCreate from './pages/post_create/post_create';
 import SearchPage from './pages/search/searchPage';
 import PostRoutes from './PostRoutes';
 import AllianceLeaderboard from './pages/leaderboards/allianceLeaderboard';
+import DiscoverPage from './pages/discover/discoverPage';
 const AppRoutes = () => {
   return (
     <Routes>
@@ -27,7 +28,7 @@ const AppRoutes = () => {
       <Route path='/test/' element={<HorizentalImages />} />
       <Route path='/create_post/' element={<PostCreate />} />
       <Route path='/leaderboards/alliance' element={<AllianceLeaderboard/>}/>
-      
+      <Route path='/discover' element={<DiscoverPage/>}/>
       <Route path="post/*" element={<PostRoutes />} />
     </Routes>
   );

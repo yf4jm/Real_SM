@@ -9,9 +9,8 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Lisidebar from '../../components/li/sidebar';
 import { Context } from '../../App';
 import CommuntiyRouteHandler from './RouteHandler';
-import Cli from '../../components/li/cathegory';
 import '../../styles/scrollbar.css'; // Import the custom scrollbar styles
-
+import SecondaryTag from '../../components/li/secondaryTag';
 const CommunityHome = () => {
   const { pk } = useParams();
   const [isVisible, setIsVisible] = useState(false);
@@ -21,8 +20,16 @@ const CommunityHome = () => {
   const cliContainerRef = useRef(null);
 
   const categories = [
-    'featured', 'blogs', 'novels', 'comics', 'quizzes',
-    'example', 'example', 'example', 'example', 'example'
+    { slug: 'featured', name: 'Featured' },
+    { slug: 'blogs', name: 'Blogs' },
+    { slug: 'novels', name: 'Novels' },
+    { slug: 'comics', name: 'Comics' },
+    { slug: 'quizzes', name: 'Quizzes' },
+    { slug: 'example', name: 'Example' },
+    { slug: 'example', name: 'Example' },
+    { slug: 'example', name: 'Example' },
+    { slug: 'example', name: 'Example' },
+    { slug: 'example', name: 'Example' }
   ];
 
   useEffect(() => {
@@ -57,11 +64,11 @@ const CommunityHome = () => {
   };
 
   return (
-    <div className='flex w-full h-screen bg-gray-50'>
+    <div className='flex w-full h-[calc(100vh-74px)] '>
       {/* Mobile Sidebar Toggle */}
       <button
         onClick={toggleSidebar}
-        className='fixed top-24 left-4 z-50 lg:hidden p-3 rounded-lg bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition-all'
+        className='fixed top-24 left-4 z-50 lg:hidden p-3 rounded-lg btn-primary btn text-white shadow-lg transition-all'
         aria-label="Toggle sidebar"
       >
         <MenuIcon className='text-xl' />
@@ -69,11 +76,9 @@ const CommunityHome = () => {
 
       {/* Left Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform transition-transform duration-300 ${
-          isVisible ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0 lg:static lg:w-1/4 z-40`}
+        className={`fixed inset-y-0 left-0 w-64 shadow-lg transform transition-transform duration-300 ${isVisible ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static lg:w-1/4 z-40`}
       >
-        <div className='flex justify-between items-center p-4 border-b border-gray-200 lg:hidden'>
+        <div className='flex justify-between items-center p-4  lg:hidden'>
           <h2 className='text-lg font-semibold text-gray-800'>Menu</h2>
           <button
             onClick={toggleSidebar}
@@ -83,7 +88,7 @@ const CommunityHome = () => {
             <CloseIcon />
           </button>
         </div>
-        
+
         <div className='overflow-y-auto h-full p-4 custom-scrollbar'>
           {cData && (
             <div className='flex flex-col items-center mb-6'>
@@ -92,42 +97,42 @@ const CommunityHome = () => {
                 alt="Community banner"
                 className="lg:w-1/2 w-36 object-cover"
               />
-              <p className="text-xl font-semibold mt-4 text-gray-800">{cData.name}</p>
+              <p className="text-xl font-semibold mt-4 ">{cData.name}</p>
             </div>
           )}
           <ul>
             <Lisidebar>home</Lisidebar>
-            </ul>
+          </ul>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className='flex-grow overflow-y-auto lg:mx-auto lg:max-w-4xl bg-white shadow-sm custom-scrollbar'>
-        <section className='sticky top-0 bg-white z-30 border-b border-gray-200'>
+      <main className='flex-grow overflow-y-auto lg:mx-auto lg:max-w-4xl shadow-sm custom-scrollbar'>
+        <section className='sticky top-0 z-30 bg-base-300'>
           <div className='relative flex items-center p-4'>
             <button
               onClick={scroll('left')}
-              className='absolute left-4 bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-md hover:bg-gray-50 transition-all'
+              className='absolute left-4 rounded-full h-10 w-10 flex items-center justify-center shadow-md transition-all'
               aria-label="Scroll left"
             >
-              <ArrowBackIosIcon className='text-gray-600' />
+              <ArrowBackIosIcon/>
             </button>
-            
+
             <ul
               ref={cliContainerRef}
               className='flex gap-4 overflow-x-auto no-scrollbar mx-16 custom-scrollbar'
             >
               {categories.map((category, index) => (
-                <Cli key={`${category}-${index}`} value={category} />
+                <SecondaryTag object={category}/>
               ))}
             </ul>
-            
+
             <button
               onClick={scroll('right')}
-              className='absolute right-4 bg-white rounded-full h-10 w-10 flex items-center justify-center shadow-md hover:bg-gray-50 transition-all'
+              className='absolute right-4 rounded-full h-10 w-10 flex items-center justify-center shadow-md transition-all'
               aria-label="Scroll right"
             >
-              <ArrowForwardIosIcon className='text-gray-600' />
+              <ArrowForwardIosIcon className='' />
             </button>
           </div>
         </section>
@@ -137,25 +142,26 @@ const CommunityHome = () => {
             {blogData ? (
               blogData.map((post) => (
                 <BlogCard
+                
                   key={post.id}
                   {...post}
                 />
               ))
             ) : (
-              <p className="text-center text-gray-500 col-span-full">Loading posts...</p>
+              <p className="text-center col-span-full">Loading posts...</p>
             )}
           </div>
         </section>
       </main>
 
       {/* Right Sidebar */}
-      <aside className='hidden lg:block w-1/4 bg-white p-6 border-l border-gray-200 custom-scrollbar'>
+      <aside className='hidden lg:block w-1/4 p-6 custom-scrollbar'>
         <nav>
-          <h3 className='text-lg font-semibold text-gray-800 mb-4'>Quick Links</h3>
+          <h3 className='text-lg font-semibold mb-4'>Quick Links</h3>
           <ul className='space-y-3'>
             {['Link 1', 'Link 2', 'Link 3', 'Link 4', 'Link 5'].map((link) => (
               <Lisidebar key={link} to={link}>
-                  {link}
+                {link}
               </Lisidebar>
             ))}
           </ul>

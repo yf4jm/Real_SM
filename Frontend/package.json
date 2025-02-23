@@ -17,6 +17,7 @@
     "@xeger/quill-image-actions": "^0.7.2",
     "@xeger/quill-image-formats": "^0.7.2",
     "axios": "^1.7.2",
+    "daisyui": "^4.12.23",
     "http-status-codes": "^2.3.0",
     "jwt-decode": "^4.0.0",
     "quill-image-resize-module-react": "^3.0.0",

@@ -12,13 +12,13 @@ const PostCreate = () => {
         <>
             <div className='flex justify-center gap-20'>
                 <ul className='flex gap-3 flex-col'>
-                    <li  className='w-48 bg-green-500 rounded-xl p-3' onClick={() => setPostType("blog")}>blog</li>
-                    <li className='w-48 bg-green-500 rounded-xl p-3' onClick={() => setPostType("poll")}>poll</li>
-                    <li className='w-48 bg-green-500 rounded-xl p-3' onClick={() => setPostType("quiz")}>quiz</li>
-                    <li className='w-48 bg-green-500 rounded-xl p-3' onClick={() => setPostType("comic")}>comic</li>
-                    <li className='w-48 bg-green-500 rounded-xl p-3'onClick={() => setPostType("novel")}>novel</li>
+                    <li  className='w-48 bg-secondary rounded-xl p-3' onClick={() => setPostType("blog")}>blog</li>
+                    <li className='w-48 bg-secondary rounded-xl p-3' onClick={() => setPostType("poll")}>poll</li>
+                    <li className='w-48 bg-secondary rounded-xl p-3' onClick={() => setPostType("quiz")}>quiz</li>
+                    <li className='w-48 bg-secondary rounded-xl p-3' onClick={() => setPostType("comic")}>comic</li>
+                    <li className='w-48 bg-secondary rounded-xl p-3'onClick={() => setPostType("novel")}>novel</li>
                 </ul>
-                <div className='bg-gray-200'>
+                <div className=''>
                     {/* Conditional rendering based on postType */}
                     {postType === "blog" && <BlogForm />}
                     {postType === "poll" && <PollForm />}

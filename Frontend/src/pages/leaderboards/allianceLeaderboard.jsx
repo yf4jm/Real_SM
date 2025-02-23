@@ -9,14 +9,14 @@ const AllianceLeaderboard = () => {
         <li>Alliance</li>
         <li>User</li>
     </ul>
-    <table className='w-full'>
-        <tr>
+    <table className='w-full '>
+        <tr className='justify-center items-center'>
             <th>rank</th>
             <th>user</th>
             <th>Contributions</th>
             <th>Contributions(community)</th>
         </tr>
-        <tr>
+        <tr className='justify-center items-center'>
             <td>#1</td>
             <td>user</td>
             <td>10000</td>

@@ -12,12 +12,17 @@ function App() {
   const [user, setUser] = useState(null);
 
   return (
-    <Context.Provider value={[ user, setUser ]}>
+    <Context.Provider value={[user, setUser]}>
       <Router>
-        <header className="sticky top-0 z-50 "> 
+        {/* Remove sticky positioning here */}
+        <header className="relative"> 
           <Navbar />
-          </header>
-            <AppRoutes />
+        </header>
+        
+        {/* Add padding to main content */}
+        <main className="min-h-[calc(100vh-4rem)] pt-16">
+          <AppRoutes />
+        </main>
       </Router>
     </Context.Provider>
   );

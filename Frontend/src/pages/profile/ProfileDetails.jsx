@@ -47,7 +47,7 @@ const ProfileDetails = () => {
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-repeat">
-    <div className="max-w-2xl w-full p-6 bg-white shadow-lg rounded-lg">
+    <div className="max-w-3xl w-full p-6 shadow-lg rounded-lg">
       <ProfileHeader profileData={profileData} />
       <ProfileInfo profileData={profileData} />
       <AllianceInfo allianceData={allianceData} />

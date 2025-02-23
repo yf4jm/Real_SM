@@ -3,20 +3,13 @@ import { useParams } from 'react-router-dom';
 import Button from '../../components/buttons/btn1';
 import axios from 'axios';
 import CommuntiyRouteHandler from './RouteHandler';
-
+import { Link } from 'react-router-dom';
 const Community = () => {
   const { pk } = useParams(); // Get pk from route parameters
   const [community, setCommunity] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  useEffect(() => {
-    document.body.classList.add('bg-gradient-to-r', 'from-neutral-700', 'to-zinc-950');
-  
-    return () => {
-      document.body.classList.remove('bg-gradient-to-r', 'from-neutral-700', 'to-zinc-950');
-    };
-  }, []);
 
   useEffect(() => {
     const fetchCommunity = async () => {
@@ -40,7 +33,7 @@ const Community = () => {
   return (
     <div className='w-full h-full'>
       {community && (
-        <div className='flex items-center justify-center gap-5 flex-wrap text-white p-8'>
+        <div className='flex items-center justify-center gap-5 flex-wrap  p-8'>
           <div className="w-52 h-96 rounded-lg overflow-hidden">
             <img src={community.image} alt={community.name} className="w-full h-full object-cover" />
           </div>
@@ -51,12 +44,12 @@ const Community = () => {
         </div>
       )}
 
-      <div className='w-full mt-8 flex flex-col items-center text-white'>
-        <div className='w-4/6 p-6 bg-gradient-to-r from-zinc-600 to-zinc-950 rounded-lg flex flex-col items-center'>
+      <div className='w-full mt-8 flex flex-col items-center bg-gradient-to-r from-pink-700 to-gray-900'>
+        <div className='w-4/6 p-6  rounded-lg flex flex-col items-center'>
           <h1 className='text-2xl mb-4'>Want to join?</h1>
           <p className='w-5/6 text-center mb-4'>Become a part of our amazing community and enjoy exclusive content, participate in events, and make new friends who share your passion for anime. Click below to get started!</p>
-          <div className='flex gap-10 flex-wrap mt-4'>
-            <Button value={"Preview"} />
+          <div className='flex gap-10 flex-wrap mt-4 '>
+            <Link to={`/c/${community.slug}`}><Button value={"Preview"} /></Link>
             <Button value={"Join"} />
           </div>
         </div>

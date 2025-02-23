@@ -7,7 +7,7 @@ const PostsList = ({postsData}) => {
       postsData
         .filter(postData => postData.status === 'PUBLIC')
         .map(postData => (
-          <div className='my-5' key={postData.id}>
+          <div className='my-10' key={postData.id}>
             <PostCard
               id={postData.id}
               title={postData.title}
