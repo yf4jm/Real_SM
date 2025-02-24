@@ -1,48 +1,15 @@
 import React, { useState, useRef } from 'react';
-import ReactQuill from 'react-quill-new';
-import 'react-quill-new/dist/quill.snow.css';
 import '../../App.css'; // Ensure fonts are declared in your custom CSS
 import CreatableSelect from 'react-select/creatable';
 import Select from 'react-select';
 import axios from 'axios'; // For API calls
-import ImageResize from 'quill-image-resize-module-react';
-import { ImageActions } from '@xeger/quill-image-actions';
-import { ImageFormats } from '@xeger/quill-image-formats';
-
-// Register fancy fonts globally
-const Quill = ReactQuill.Quill;
-const Font = Quill.import("formats/font");
-Font.whitelist = [
-  "Roboto", "Raleway", "SUSE", "Montserrat", "Lato", 
-  "Rubik", "Playfair_Display", "Merriweather", "Libre Baskerville", "Zilla Slab"
-];
-Quill.register(Font, true);
-Quill.register('modules/imageResize', ImageResize);
-Quill.register('modules/imageActions', ImageActions);
-Quill.register('modules/imageFormats', ImageFormats);
-
+import BlogEditor from '../inputs/blogEditor';
 const BlogForm = () => {
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
   const [image, setImage] = useState(null); // For uploaded image
   const [keywords, setKeywords] = useState([]); // Store keyword options
   const [selectedKeywords, setSelectedKeywords] = useState([]); // Store selected keywords
-  const quillRef = useRef(null);
-
-  const toolbarOptions = [
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    [{ font: Font.whitelist }],
-    ['bold', 'italic', 'underline', 'strike'],
-    [{ align: [] }, { direction: 'rtl' }],
-    ['blockquote', 'code-block'],
-    ['link', 'image', 'video'],
-    [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
-    [{ script: 'sub' }, { script: 'super' }, 'formula'],
-    [{ indent: '-1' }, { indent: '+1' }],
-    [{ color: [] }, { background: [] }],
-    ['clean'],
-  ];
-
   // Function to handle image upload
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -80,40 +47,27 @@ const BlogForm = () => {
   const handlePost = () => {
     const editor = quillRef.current.getEditor();
     const plainText = editor.getText();
-    console.log(editor);
     alert("clicked");
   };
 
   return (
     <>
+    <div className='w-full'>
       <p>Create Blog</p>
       <div className="flex flex-col justify-center w-full items-center gap-5">
-        {/* Title Input */}
+
         <label htmlFor="title">Title: </label>
         <input 
           type="text" 
           value={title} 
           onChange={(e) => setTitle(e.target.value)} 
-          className="border-solid border-2 border-slate-400 w-1/2"
+          className="input input-primary w-full"
         />
         
         {/* Description (Quill Editor) */}
         <label htmlFor="description">Description: </label>
-        <ReactQuill
-          theme="snow"
-          ref={quillRef}
-          value={description}
-          onChange={setDescription}
-          modules={{
-            imageActions: {},
-            toolbar: toolbarOptions,
-            imageResize: {
-              parchment: Quill.import('parchment'),
-              modules: ['Resize', 'DisplaySize']
-            }
-          }}
-          className="w-1/2 h-auto border-solid border-2 border-slate-400"
-        />
+        <BlogEditor />
+
         
         {/* Alliance Selection */}
         <span>Alliance:</span>
@@ -121,12 +75,12 @@ const BlogForm = () => {
           name="Alliance"
           options={options} 
           onInputChange={handleKeywordInputChange}
-          className="w-1/2"
+          className="w-full"
         />
 
         {/* Status Selection */}
         <span>Status:</span>
-        <select name="status" id="status" className="w-1/2">
+        <select name="status" id="status" className="select select-primary w-full">
           <option value="PUBLIC">Public</option>
           <option value="PRIVATE">Private</option>
           <option value="DRAFT">Draft</option>
@@ -148,13 +102,13 @@ const BlogForm = () => {
             }
           }}
           onInputChange={handleKeywordInputChange}
-          className="w-1/2"
+          className="w-full "
           classNamePrefix="select"
         />
         
         {/* Image Upload */}
         <span>Cover:</span>
-        <div className="flex flex-col items-center justify-center w-1/2">
+        <div className="flex flex-col items-center justify-center w-full">
           <label
             htmlFor="dropzone-file"
             className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
@@ -192,7 +146,7 @@ const BlogForm = () => {
         
         {/* Submit Button */}
         <button 
-          className="bg-sky-300 w-1/2 py-2 rounded-lg"
+          className="btn btn-primary w-full py-2 rounded-lg"
           onClick={handlePost}
         >
           Submit
@@ -201,8 +155,8 @@ const BlogForm = () => {
 
       {/* Preview the description */}
       <div className="preview">
-        <h2>{description}</h2>
-        <div dangerouslySetInnerHTML={{ __html: description }} />
+        <h2 className=''>{description}</h2>
+      </div>
       </div>
     </>
   );

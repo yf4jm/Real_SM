@@ -49,7 +49,7 @@ const BlogDetails = () => {
 
 
       {/* Blog Description */}
-      <div className="prose max-w-none mt-6" dangerouslySetInnerHTML={{ __html: blog.description.html }} />
+      <div className="prose max-w-none mt-6" dangerouslySetInnerHTML={{ __html: blog.description }} />
       {/* Author Info */}
       <div className="flex items-center mt-4">
         <img src={blog.author.icon} alt={blog.author.name} className="w-12 h-12 rounded-full mr-3" />

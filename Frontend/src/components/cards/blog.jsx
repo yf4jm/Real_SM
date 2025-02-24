@@ -30,19 +30,22 @@ const BlogCard = ({ id, title, author, description, is_liked, likes_count, media
       console.error('Error toggling like:', error);
     }
   };
-
+  
   const formattedDate = getFormattedDate(created_on);
 
   return (
     <div className="card w-full bg-base-100 rounded-lg shadow-lg overflow-hidden flex flex-col" style={{ maxHeight: '750px' }}>
       <Link to={`/post/blog/${id}`} className="block flex-grow">
-        <figure className="max-h-96 min-h-40 w-full overflow-hidden">
-          <img src={media || no_img} alt="Post image" className="h-full w-full object-cover" />
-        </figure>
+        {media &&
+                <figure className="max-h-96 min-h-40 w-full overflow-hidden">
+                <img src={media} alt="Post image" className="h-full w-full object-cover" />
+              </figure>
+              }
+
         <div className="card-body p-6 flex-grow">
           <h2 className="card-title text-2xl font-semibold mb-2">{title}</h2>
           <p className="text-gray-700 overflow-auto overflow-ellipsis" style={{ maxHeight: '6rem' }}>
-            {description.plain}
+            {description.text}
           </p>
         </div>
       </Link>

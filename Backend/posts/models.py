@@ -86,7 +86,7 @@ class QuizChoice(models.Model):
 class Blog(Post):
     media = models.ImageField(upload_to='blog_cover/',null=True,blank=True)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='blogs', db_index=True)
-    description = models.JSONField(null=True)
+    description = models.JSONField(null=True,blank=True)
     def __str__(self):
         return self.title
 #/////////////////////////////////////////////

@@ -28,7 +28,7 @@ class PostManager(models.Manager):
     def get_queryset(self):
         return (super().get_queryset()
                 .select_related('author')
-                
+                    
                 )
 
     def create_post(self, title, **kwargs):
@@ -36,7 +36,7 @@ class PostManager(models.Manager):
         return self.create(title=title, slug=slug, **kwargs)
 class Post(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=100, unique=True)
+    title = models.CharField(max_length=100,null=False,blank=False)
     slug = models.SlugField(default="", null=True, unique=True, blank=True, db_index=True)
     status = models.CharField(max_length=7, choices=Status.choices, default=Status.PUBLIC, db_index=True)
     likes = models.ManyToManyField(Profile, blank=True,related_name="+")

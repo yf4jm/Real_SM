@@ -10,7 +10,7 @@ const PostCreate = () => {
 
     return (
         <>
-            <div className='flex justify-center gap-20'>
+            <div className='flex justify-center gap-20 w-full'>
                 <ul className='flex gap-3 flex-col'>
                     <li  className='w-48 bg-secondary rounded-xl p-3' onClick={() => setPostType("blog")}>blog</li>
                     <li className='w-48 bg-secondary rounded-xl p-3' onClick={() => setPostType("poll")}>poll</li>
@@ -18,7 +18,7 @@ const PostCreate = () => {
                     <li className='w-48 bg-secondary rounded-xl p-3' onClick={() => setPostType("comic")}>comic</li>
                     <li className='w-48 bg-secondary rounded-xl p-3'onClick={() => setPostType("novel")}>novel</li>
                 </ul>
-                <div className=''>
+                <div className='w-1/2'>
                     {/* Conditional rendering based on postType */}
                     {postType === "blog" && <BlogForm />}
                     {postType === "poll" && <PollForm />}

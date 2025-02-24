@@ -113,6 +113,7 @@ class QuillFieldDetailsSerializer(serializers.Field):
         return {
             'raw':value.delta,
             'html': value.html,
+            
         }
 
     def to_internal_value(self, data):
