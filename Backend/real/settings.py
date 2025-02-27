@@ -44,18 +44,25 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+
     "posts.apps.PostsConfig",
     "communities.apps.CommunitiesConfig",
     "alliances.apps.AlliancesConfig",
     "users.apps.UsersConfig",
     "comments.apps.CommentsConfig",
     'cosmetics.apps.CosmeticsConfig',
+    "chat.apps.ChatConfig",
+    "search.apps.SearchConfig",
+    "logs.apps.LogsConfig",
+
     "corsheaders",
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
-    "chat",
+
     "debug_toolbar",
-    "search"
+
+
 ]
 
 

@@ -5,7 +5,7 @@ from .timestamp import TimeStamp
 from users.models import Profile
 from django.db.models import Count
 from search.models import Keyword
-
+from alliances.models import Alliance
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 class Status(models.TextChoices):
@@ -44,6 +44,7 @@ class Post(TimeStamp):
     keywords = models.ManyToManyField(Keyword, blank=True)
     keywords_score = models.JSONField(null=True,blank=True)
     clicks_count = models.PositiveIntegerField(default=0,blank=True)
+    alliance = models.ForeignKey(Alliance,on_delete=models.SET_NULL,null=True,blank=True)
     objects = PostManager()
     
     class Meta:

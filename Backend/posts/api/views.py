@@ -61,10 +61,10 @@ class UserPostsView(APIView):
     
     def get(self, request, profile_id):
         # Pass profile_id to metadata class
-        meta = self.metadata_class(profile_id=profile_id)
-        data = meta.determine_metadata(request, self)
+        # meta = self.metadata_class(profile_id=profile_id)
+        # data = meta.determine_metadata(request, self)
 
-        data['description'] = 'Custom Header Value'
+        # data['description'] = 'Custom Header Value'
         
         # Fetch all posts created by the user
         polls = Poll.objects.filter(author_id=profile_id)
@@ -92,6 +92,34 @@ class UserPostsView(APIView):
 
         return Response(all_posts_sorted, status=status.HTTP_200_OK)
 
+
+class AlliancePostsDetailView(APIView):
+    def get(self, request, alliance_id):
+        # Fetch all posts created by the user
+        polls = Poll.objects.filter(alliance_id=alliance_id)
+        quizzes = Quiz.objects.filter(alliance_id=alliance_id)
+        blogs = Blog.objects.filter(alliance_id=alliance_id)
+        novels = Novel.objects.filter(alliance_id=alliance_id)
+        comics = Comic.objects.filter(alliance_id=alliance_id)
+
+        # Serialize the data with request context
+        poll_serializer = PollSerializer(polls, many=True, context={'request': request})
+        quiz_serializer = QuizSerializer(quizzes, many=True, context={'request': request})
+        blog_serializer = BlogSerializer(blogs, many=True, context={'request': request})
+        novel_serializer = NovelSerializer(novels, many=True, context={'request': request})
+        comic_serializer = ComicSerializer(comics, many=True, context={'request': request})
+        
+        # Combine and sort by created_on field
+        all_posts = list(chain(
+            poll_serializer.data,
+            quiz_serializer.data,
+            blog_serializer.data,
+            novel_serializer.data,
+            comic_serializer.data,
+        ))
+        all_posts_sorted = sorted(all_posts, key=lambda x: x['created_on'], reverse=True)
+
+        return Response(all_posts_sorted, status=status.HTTP_200_OK)
 
 
 
@@ -188,3 +216,5 @@ class BlogListCreateView(generics.ListCreateAPIView):
 class BlogDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+
+

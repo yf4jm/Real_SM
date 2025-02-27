@@ -1,6 +1,7 @@
 import React from 'react'
 import SecondaryTag from '../li/secondaryTag';
 const AllianceInfo = ({allianceData}) => {
+  console.log(allianceData)
   return (
     <div>
     <h2 className="text-xl font-semibold my-5">Alliance</h2>

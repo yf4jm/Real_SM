@@ -10,7 +10,7 @@ from .views import (
     QuizListCreateView, QuizDetailView,
     QuizChoiceListCreateView, QuizChoiceDetailView,
     BlogListCreateView, BlogDetailView,LikeToggleView,UserPostsView,
-    KeywordCreateView,KeywordDetailView
+    KeywordCreateView,KeywordDetailView,AlliancePostsDetailView
 )
 from django.views.decorators.cache import cache_page
 
@@ -20,7 +20,7 @@ urlpatterns = [
     path('keywords/<int:pk>',KeywordDetailView.as_view(),name='keyword-detail'),
 
     path('profile/<uuid:profile_id>/posts/', UserPostsView.as_view(), name='user-posts'),
-
+    path('alliance/<uuid:alliance_id>/posts/',AlliancePostsDetailView.as_view(), name='alliance-posts'),
 
     path('<str:post_type>/<uuid:post_id>/like/', LikeToggleView.as_view(), name='like-toggle'),
     
