@@ -1,7 +1,12 @@
 import React from 'react'
 import PostCard from '../cards/post'
+import { useState ,useEffect} from 'react';
+import { useSearchParams } from 'react-router-dom';
 const PostsList = ({postsData}) => {
+
   return (
+    <>
+    
     <div>
     {postsData.length > 0 ? (
       postsData
@@ -26,7 +31,9 @@ const PostsList = ({postsData}) => {
     ) : (
       <p className="text-gray-500 text-center">No posts available.</p>
     )}
+
   </div>
+  </>
   )
 }
 

@@ -7,7 +7,7 @@ import profileAllianceData from '../../fetch/profileAllianceData';
 import profileFetch from '../../fetch/profile/profileFetch';
 import { useParams } from 'react-router-dom';
 import profilePostsFetch from '../../fetch/profile/profilePostsFetch';
-
+import ProfileFollowButton from '../../components/buttons/profileFollow';
 import NovelsList from '../../components/render/novelsList';
 import ProfileHeader from '../../components/profile/profileHeader';
 import PostsList from '../../components/render/postsList';
@@ -49,6 +49,10 @@ const ProfileDetails = () => {
     <div className="min-h-screen flex justify-center items-center bg-repeat">
     <div className="max-w-3xl w-full p-6 shadow-lg rounded-lg">
       <ProfileHeader profileData={profileData} />
+      <div className='flex justify-center items-center my-12'>
+      <ProfileFollowButton id={pk}/>
+      </div>
+
       <ProfileInfo profileData={profileData} />
       <AllianceInfo allianceData={allianceData} />
       <NovelsList postsData={postsData} />

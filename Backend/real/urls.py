@@ -38,6 +38,7 @@ urlpatterns = [
     path('api/',getRoutes,name='api-route'),
     path('api/',include('communities.api.urls')),
     path('api/',include('chat.api.urls')),
+    path('api/',include('post_comments.api.urls')),
 
     
 ]

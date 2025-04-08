@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     "communities.apps.CommunitiesConfig",
     "alliances.apps.AlliancesConfig",
     "users.apps.UsersConfig",
-    "comments.apps.CommentsConfig",
+    "post_comments.apps.PostCommentsConfig",
     'cosmetics.apps.CosmeticsConfig',
     "chat.apps.ChatConfig",
     "search.apps.SearchConfig",

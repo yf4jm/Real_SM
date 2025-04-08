@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
-import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
-import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import no_img from '../../assets/no_img.png';
 import toggleLike from '../../posts/like_post';
 import getFormattedDate from '../../utils/getFormattedDate';
-
+import PostActions from '../common/postActions';
+import { useNavigate } from 'react-router-dom';
 const PollCard = ({ id, title, author, opts, is_liked, likes_count, created_on, clicks_count }) => {
   const [liked, setLiked] = useState(is_liked);
   const [likeCount, setLikeCount] = useState(likes_count);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLiked(is_liked);
@@ -30,9 +27,11 @@ const PollCard = ({ id, title, author, opts, is_liked, likes_count, created_on, 
       console.error('Error toggling like:', error);
     }
   };
-
+  const handleModal = ()=>{
+    navigate(`?post_id=${id}&post_type=polls`);
+    
+  }
   const formattedDate = getFormattedDate(created_on);
-
   return (
     <div className="card w-full bg-base-100">
       <div className="card-body">
@@ -55,17 +54,8 @@ const PollCard = ({ id, title, author, opts, is_liked, likes_count, created_on, 
         <div className="my-2">
           <span>{clicks_count} clicks</span>
         </div>
-        <div className="flex justify-between items-center mt-4">
-          <div onClick={handleToggleLike} className="cursor-pointer flex items-center">
-            {liked ? <FavoriteIcon className="text-primary" /> : <FavoriteBorderIcon className="text-gray-400" />}
-            <span className="ml-1 text-gray-500">{likeCount}</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <ModeCommentOutlinedIcon className="cursor-pointer text-gray-500" />
-            <SendOutlinedIcon className="cursor-pointer text-gray-500" />
-            <MoreHorizOutlinedIcon className="cursor-pointer text-gray-500" />
-          </div>
-        </div>
+        
+        <PostActions liked={liked} likeCount={likeCount} onToggleLike={handleToggleLike} onModalOpen={handleModal} />
       </div>
     </div>
   );

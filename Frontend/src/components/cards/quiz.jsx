@@ -30,7 +30,10 @@ const QuizCard = ({ id, title, author, opts, is_liked, likes_count, created_on, 
       console.error('Error toggling like:', error);
     }
   };
-
+  const handleModal = ()=>{
+    navigate(`?post_id=${id}&post_type=quizzes`);
+    
+  }
   const formattedDate = getFormattedDate(created_on);
 
   return (

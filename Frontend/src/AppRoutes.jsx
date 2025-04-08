@@ -16,7 +16,9 @@ import AllianceLeaderboard from './pages/leaderboards/allianceLeaderboard';
 import DiscoverPage from './pages/discover/discoverPage';
 const AppRoutes = () => {
   return (
+    
     <Routes>
+      
       <Route path='/search' element={<SearchPage />} />
       <Route path='/error/404' element={<Page_404 />} />
       <Route path="/community/:pk" element={<Community />} />

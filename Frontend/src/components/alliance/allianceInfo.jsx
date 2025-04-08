@@ -1,7 +1,6 @@
 import React from 'react'
 import SecondaryTag from '../li/secondaryTag';
 const AllianceInfo = ({allianceData}) => {
-  console.log(allianceData)
   return (
     <div>
     <h2 className="text-xl font-semibold my-5">Alliance</h2>
@@ -16,7 +15,7 @@ const AllianceInfo = ({allianceData}) => {
         <p className=" text-sm">{allianceData.description}</p>
         <ul className="flex flex-wrap justify-center gap-2 mt-2">
           {allianceData.community_list?.map((community) => (
-            <SecondaryTag object={community}/>
+            <SecondaryTag  key={community.slug} object={community}/>
           ))}
         </ul>
       </div>

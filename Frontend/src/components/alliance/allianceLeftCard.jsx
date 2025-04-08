@@ -17,7 +17,7 @@
         {alliance.community_list && alliance.community_list.length > 0 ? (
           <ul className="flex flex-wrap justify-center gap-2">
             {alliance.community_list.map((community) => (
-              <SecondaryTag object={community}/>
+              <SecondaryTag key={community.slug} object={community}/>
             ))}
           </ul>
         ) : (

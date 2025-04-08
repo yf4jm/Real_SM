@@ -3,6 +3,7 @@ import BlogCard from './blog'
 import QuizCard from './quiz'
 import PollCard from './poll'
 const PostCard = ({id,title,author,opts={},is_liked,likes_count,description="",media, created_on,type,clicks_count}) => {
+
     switch(type){
         case("blog"):
             return(
